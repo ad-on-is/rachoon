@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Invoice</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-print@1.0.0/css/bulma-print.css">
+
+    <style>
+
+      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;600;700;800;900&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;600;700;800;900&display=swap');
+
+@media print {
+      @page {
+        size: A4 portrait;
+        margin: 0mm 0mm 0mm 0mm;
+        
+        
+      }
+
+      body, html {
+        font-size:10pt;
+      }
+      footer {
+        font-size: 6pt;
+      }
+    }
+
+      main {
+        font-family: "Roboto", arial, sans-serif;
+      }
+
+      h1{
+        font-family: "Montserrat", arial, sans-serif;
+        font-weight: 900;
+      }
+
+      h2,h3,h4,h5,h6 {
+        font-weight: 600;
+      }
+      footer {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        bottom: 0;
+      }
+
+      header {
+        position: absolute;
+        width: 100%;
+      }
+
+      main {
+        padding-top: 100px !important;
+      } 
+
+      .logo {
+        width: 200px;
+        height: auto;
+
+      }
+
+      /* ul {
+        margin-left: 0 !important;
+        list-style-position: inside !important;
+      }
+      ul ul {
+        margin-left: 20px !important;
+      } */
+    </style>
+  </head>
+  <body>
+    <header class="section has-text-right">
+      <img src="https://dnmc.at/wp-content/uploads/2018/05/dnmc_red.svg" class="logo" />
+    </header>
+    <main class="content">
+      <section class="columns section">
+       
+        <div class="column">
+          <p>{{invoiceOrOffer.client.name}}<br />{{invoiceOrOffer.client.data.address.street}}</br>{{invoiceOrOffer.client.data.address.zip}} {{invoiceOrOffer.client.data.address.city}}<br />{{invoiceOrOffer.client.data.address.country}}</p>
+        </div>
+        <div class="column columns">
+          <div class="column">
+            <h3>Rechnungs-Nr.</h3>
+            <p>Rechnungsdatum<br/>
+            Ust-ID</p>
+            
+          </div>
+          <div class="column has-text-right">
+            <h3>{{invoiceOrOffer.number}}</h3>
+            <p>{{invoiceOrOffer.date}}<br />
+            {{invoiceOrOffer.client.data.info.vat}}</p>
+          </div>
+        </div>
+      </section>
+    <section class="section content">
+      <h1>Invoice</h1>
+      {{invoiceOrOffer.data.headingText | safe}}
+      <table class="table is-fullwidth is-narrow">
+        <thead>
+          <tr>
+  
+            <td width="40">Pos</td>
+            <td>Description</td>
+            <td width="150" class="has-text-right">Quantity</td>
+            <td width="150" class="has-text-right">Unit price</td>
+            <td width="150" class="has-text-right">Total price</td>
+          </tr>
+        </thead>
+        <tbody>
+          {% for position in invoiceOrOffer.data.positions %}
+          <tr>
+            <td>{{position.idx}}.</td>
+            <td><p>{{position.title}}</p>{{position.text | safe}}</td>
+            <td class="has-text-right">{{position.quantity}} {{position.unit}}</td>
+            <td class="has-text-right">{{position.price}}</td>
+            <td class="has-text-right">{{position.total}}</td>
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+      <div class="columns">
+        <div class="column"></div>
+        <div class="column">
+          <table class="table">
+            <tbody>
+              <tr>
+                <td>Nett</td>
+                <td class="has-text-right">{{invoiceOrOffer.data.net}}</td>
+              </tr>
+              <tr>
+                <td>tax<br />
+                  {% for rate,tax in invoiceOrOffer.data.taxes %}
+                  {{rate}}%<br />
+                  {%endfor%}
+                </td>
+                <td class="has-text-right">
+                  <br />
+                  {% for rate,tax in invoiceOrOffer.data.taxes %}
+                  {{tax}}<br />
+                  {%endfor%}
+                </td>
+              </tr>
+              <tr>
+                <td>discounts<br />
+                  {% for discountOrCharge in invoiceOrOffer.data.discountsCharges %}
+                  {{discountOrCharge.title}}<br />
+                  {%endfor%}</td>
+                <td class="has-text-right"><br />
+                  {% for discountOrCharge in invoiceOrOffer.data.discountsCharges %}
+                  {{discountOrCharge.value}}<br />
+                  {%endfor%}
+                </td>
+              </tr>
+              <tr>
+                <td><h2>Total</h2></td>
+                <td class="has-text-right"><h2>{{invoiceOrOffer.data.total}}</h2></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <hr />
+      {{invoiceOrOffer.data.footerText | safe}}
+      </section>
+    </main>
+    
+  <footer class="has-background-dark has-text-white section">
+    <section class="columns">
+      <div class="column"><p>DYNAMIC INTERACTIVE e.U.<br />Diehlgasse 4/4<br />1050 Wien, Österreich</p></div>
+      <div class="column"><p>Tel.: +43 660 5955 120<br />E-Mail: <a href="mailto:office@dnmc.at">office@dnmc.at</a><br />Web: <a href="https://dnmc.at">dnmc.at</a></p></div>
+      <div class="column"><p>HR-Nr.: 465559 x , Wien<br />
+        USt.-ID: ATU72186528 <br />
+        Steuer-Nr.: 04 414/6033</p></div>
+      <div class="column"><p>
+        Erste Bank und Sparkasse<br />
+IBAN: AT30 2011 1829 8581 8700<br />
+BIC: GIBAATWWXXX
+      </p></div>
+
+    </section>
+  </footer>
+  </body>
+</html>

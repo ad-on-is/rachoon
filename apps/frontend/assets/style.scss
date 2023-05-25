@@ -1,0 +1,270 @@
+// @tailwind base;
+// @tailwind components;
+// @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Leckerli+One&family=Cantarell:wght@200;400;700&display=swap');
+@import '@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss';
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) var(--primary);
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 7px;
+}
+
+
+*::-webkit-scrollbar-track {
+  @apply bg-base-300;
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  @apply bg-primary bg-opacity-20;
+  border-radius: 14px;
+}
+
+html,body {
+  font-family: 'Cantarell';
+}
+
+*:focus {
+    outline: 0px !important;
+}
+
+input:focus, select:focus {
+    @apply border-info #{!important};
+}
+
+.divider {
+    @apply opacity-50;
+}
+.tab-active {
+    @apply text-primary;
+}
+
+#app {
+    min-height: 100vh;
+}
+
+
+.ql-toolbar,
+.ql-container {
+ @apply border-base-100 #{!important};
+}
+
+
+.dp__preset_ranges{
+  @apply text-sm text-white #{!important};
+}
+.dp__arrow_top {
+    @apply bg-info #{!important} ;
+}
+
+.dp__calendar_header_item, .dp__month_year_row {
+  @apply text-sm text-base-content;
+}
+
+.dp__month_year_row {
+  @apply text-white;
+}
+
+.dp__today {
+  @apply border-none bg-primary bg-opacity-30 #{!important};
+}
+
+.dp__cell_inner {
+  transition: background-color 0.3s;
+  @apply text-base-content m-0.5 text-xs;
+  &.dp__active_date {
+    @apply text-info bg-opacity-30 #{!important};
+  }
+}
+
+.dp__range_between, .dp__range_start, .dp__cell_inner:hover{
+  @apply bg-info bg-opacity-20 border-none #{!important};
+}
+
+.dp__cell_inner:hover,.dp__range_start {
+  @apply bg-opacity-30 #{!important};
+}
+
+
+.input-group :first-child {
+    @apply rounded-tl-lg rounded-bl-lg #{!important};
+  }
+  
+  .input-group :last-child {
+    @apply rounded-tr-lg rounded-br-lg #{!important};
+  }
+
+  .ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    pointer-events: none;
+    height: 0;
+    opacity: 0.3;
+  }
+
+  table tbody td {
+    transition: background-color 0.3s;
+  }
+
+  .table.table-primary thead tr th {
+    @apply text-primary bg-primary bg-opacity-10;
+  }
+
+  .table.table-info thead tr th {
+    @apply text-info bg-info bg-opacity-10;
+  }
+
+  .table.table-info-body tbody tr td {
+    @apply bg-info bg-opacity-5;
+  }
+
+  .logo h2 {
+    font-weight: 800;
+    font-size: 35px;
+    font-family: "Leckerli One";
+    @apply text-white;
+  }
+
+  .vue-notification-wrapper {
+    @apply pr-5 #{!important};
+  }
+
+  .notification.alert {
+    @apply bg-primary text-black;
+    &.success {
+      @apply bg-success text-black;
+    }
+    &.info {
+      @apply bg-info text-black;
+    }
+    &.error {
+      @apply bg-error text-black;
+    }
+  }
+
+  .label-text {
+    @apply text-info opacity-50;
+  }
+
+  input[type=text]:focus {
+    @apply text-info;
+    @apply opacity-100;
+  }
+
+  .prose {
+    @apply max-w-full;
+    h1 {
+      @apply text-success;
+      font-weight: 700;
+    }
+    h2, h3 {
+      @apply text-primary;
+      font-weight: 700;
+    }
+  }
+
+  .tooltip {
+    cursor: pointer;
+  }
+  .tooltip:before {
+    @apply text-xs;
+  }
+
+  .simple-typeahead-list {
+    position: absolute;
+    @apply  rounded-lg mt-2 w-80;
+    cursor: pointer;
+    z-index: 9999;
+    
+    .simple-typeahead-list-item {
+      @apply bg-base-300 p-1;
+      .simple-typeahead-list-item-text {
+        strong {
+          @apply text-info
+        }
+      }
+      &.simple-typeahead-list-item-active {
+        @apply bg-info text-black;
+        .simple-typeahead-list-item-text {
+          strong {
+            @apply text-black
+          }
+        }
+      }
+    }
+
+    small {
+      @apply text-xs;
+    }
+    
+  }
+
+  input::placeholder {
+    @apply text-base-content text-opacity-50;
+  }
+
+  .dp__input {
+    font-family: 'Cantarell' !important;
+    @apply text-base-content;
+  }
+
+  .dp__input_wrap svg {
+    @apply fill-info;
+    
+  }
+
+
+  .page-enter-active,
+.page-leave-active  {
+  transition: opacity 0.3s;
+}
+.page-enter,
+.page-leave-to{
+  opacity: 0;
+}
+
+:root {
+  --popper-theme-background-color: rgba(0, 0, 0, 0.5);
+  --popper-theme-background-color-hover: rgba(0, 0, 0, 0.5);
+  --popper-theme-text-color: #ffffff;
+  --popper-theme-border-width: 0px;
+  --popper-theme-border-style: solid;
+  --popper-theme-border-radius: 6px;
+  --popper-theme-padding: 5px 10px;
+}
+
+.modal {
+  @apply bg-base-300 bg-opacity-80 backdrop-blur-md;
+}
+
+.simple-html * {
+  display: inline;
+  padding: 0;
+  margin: 0;
+}
+
+
+.dp__theme_dark {
+  --dp-background-color: hsl(var(--b3));
+  --dp-text-color: #ffffff;
+  --dp-hover-color: hsl(var(--in));
+  --dp-hover-text-color: #ffffff;
+  --dp-hover-icon-color: #ffffff;
+  --dp-primary-color: hsl(var(--p));
+  --dp-primary-text-color: hsl(var(--p));
+  --dp-secondary-color: hsl(var(--bc));
+  --dp-disabled-color: #737373;
+  --dp-scroll-bar-background: #212121;
+  --dp-scroll-bar-color: #484848;
+  --dp-success-color: hsl(var(--su));
+  --dp-success-color-disabled: #428f59;
+  --dp-icon-color: #ffffff;
+  --dp-danger-color: hsl(var(--er));
+  --dp-highlight-color: hsl(var(--p));
+}

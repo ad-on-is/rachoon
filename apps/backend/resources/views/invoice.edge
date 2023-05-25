@@ -1,0 +1,349 @@
+<html>
+
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:100,300,600,700,800,900" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,600,700,800,900" rel="stylesheet" />
+  <style>
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 50mm 17mm 35mm 20mm;
+
+        @top-left {
+          content: element(headerIdentifier);
+        }
+
+        @bottom-left {
+          content: element(footerIdentifier);
+        }
+
+        @left-middle {
+          content: element(foldlinesIdentifier);
+        }
+      }
+    }
+
+    .foldline1 {
+      position: absolute;
+      left: 0;
+      top: 55mm;
+      width: 4mm;
+      border: 0;
+      border-bottom: 1px solid #c1cbd9;
+    }
+ 
+    .foldline2 {
+      position: absolute;
+      left: 0;
+      top: 155mm;
+      width: 4mm;
+      border: 0;
+      border-bottom: 1px solid #c1cbd9;
+    }
+
+    .foldline3 {
+      position: absolute;
+      left: 0;
+      top: 98mm;
+      width: 7mm;
+      border: 0;
+      border-bottom: 1px solid #c1cbd9;
+    }
+
+    aside.foldlines {
+      position: running(foldlinesIdentifier);
+    }
+
+    body.main {
+      font-family: "Roboto", arial, sans-serif;
+      counter-reset: position;
+      color: #1b252b;
+      font-weight: 100;
+      line-height: 1.5;
+    }
+
+    header {
+      position: running(headerIdentifier);
+      width: 100%;
+      font-size: 23pt;
+      text-align: right;
+    }
+
+    img.logo {
+      height: 20mm;
+      position: absolute;
+      top: 0mm;
+      right: 0;
+    }
+
+    footer {
+      /*position: running(footerIdentifier);*/
+      font-size: 7pt;
+      line-height: 10pt;
+      background: #363636;
+      /*width: 100%;*/
+      position: absolute;
+      left: -20mm;
+      right: -20mm;
+      bottom: -35mm;
+      padding: 10pt;
+      padding-left: 20mm;
+      padding-right: 20mm;
+    }
+
+    footer table {
+      width: 100%;
+      color: #ffffff;
+    }
+
+    footer table td {
+      width: 25%;
+    }
+
+    footer td {
+      vertical-align: top;
+    }
+
+    h1 {
+      font-size: 16pt;
+      color: #1b252b;
+      font-family: "Montserrat", arial, sans-serif;
+      font-weight: 600;
+    }
+
+    .qrcode {
+      -ro-replacedelement: qrcode;
+    }
+
+    .page::before {
+      content: counter(page);
+    }
+
+    .totalPages::before {
+      content: counter(pages);
+    }
+
+    div.addressline {
+      display: none;
+      font-size: 9pt;
+      position: absolute;
+      top: -40mm;
+      left: 1mm;
+    }
+
+    div.recipient {
+      font-size: 9pt;
+      position: absolute;
+      top: 0mm;
+      left: 1mm;
+      white-space: pre-wrap;
+    }
+
+    div.descbox {
+      position: absolute;
+      top: -35mm;
+      right: 0;
+      width: 65mm;
+      font-size: 7pt;
+      word-wrap: break-word;
+    }
+
+    div.descbox table tr td {
+      width: 50%;
+    }
+
+    .url-qrcodeWrapper {
+      height: 14mm;
+      text-align: right;
+      margin-bottom: 3mm;
+    }
+
+    .url-qrcode {
+      width: 14mm;
+    }
+
+    div.descbox table {
+      width: 100%;
+    }
+
+    div.descbox table tr {
+      margin: 3px 0;
+    }
+
+    hr.floated {
+      visibility: hidden;
+      float: left;
+    }
+
+    .headText {
+      font-size: 9pt;
+      color: #1b252b;
+    }
+
+    .footText {
+      font-size: 9pt;
+      color: #1b252b;
+    }
+
+    a {
+      color: #ee1630;
+    }
+
+    table.postable {
+      font-size: 9pt;
+      width: 100%;
+      border-collapse: collapse;
+      border-spacing: 0;
+      margin: 4mm 0;
+    }
+
+    table.postable td {
+      padding-right: 1mm;
+    }
+
+    table.postable .position {
+      page-break-inside: avoid;
+    }
+
+    table.postable .position td {
+      padding-bottom: 2mm;
+      padding-top: 5mm;
+    }
+
+    table.postable tbody .posnr {
+      padding-left: 2mm;
+    }
+
+    table.postable .postext {
+      line-height: 1.5;
+      white-space: pre-wrap;
+      font-size: 7pt;
+      color: #1b252b;
+    }
+
+    table.postable .discount {
+      font-size: 7pt;
+      line-height: 10pt;
+    }
+
+    table.postable tfoot {
+      page-break-inside: avoid;
+      display: table-row-group;
+    }
+
+    table.postable tfoot .line td {
+      border-bottom: 1px solid #eef1f5;
+      height: 2pt;
+      padding-top: 5mm;
+    }
+
+    table.postable tfoot .totalnet,
+    table.postable tfoot .discountnet {
+      line-height: 6mm;
+      font-size: 9pt;
+      padding: 0 2mm;
+    }
+
+    table.postable tfoot .totalnet td {
+      padding-top: 5mm;
+    }
+
+    table.postable tfoot .vat,
+    table.postable tfoot .discount {
+      line-height: 6mm;
+      font-size: 9pt;
+      padding: 0mm;
+      margin: 0;
+      border: 0;
+    }
+
+    table.postable tfoot .total {
+      color: #1b252b;
+      line-height: 6mm;
+      font-size: 9pt;
+      padding: 0 2mm;
+      margin: 0;
+      border: 0;
+    }
+
+    hr.invisible {
+      visibility: hidden;
+      clear: both;
+      margin: 0;
+      height: 40mm;
+    }
+
+    table.postable tr {
+      line-height: 6mm;
+      padding: 0 2mm;
+    }
+
+    tr.postheader {
+      color: #1b252b;
+    }
+
+    tr.postheader td {
+      white-space: nowrap;
+      border-bottom: 1px solid #eef1f5;
+      font-weight: 300;
+    }
+
+    table.postable td {
+      vertical-align: top;
+    }
+
+    td.right {
+      text-align: right;
+    }
+
+    .acceptance {
+      font-size: 7pt;
+      margin-top: 15mm;
+    }
+
+    .darktext {
+      color: #1b252b;
+    }
+
+    h2,
+    h3,
+    h4 {
+      font-weight: 100;
+    }
+
+    .colortext {
+      color: #ee1630;
+    }
+
+    strong,
+    b {
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body class="main">
+  <table>
+    <thead>
+      <tr class="postheader">
+        <td style="width: 8mm">a</td>
+        <td style="width: 15mm">b</td>
+        <td style="width: 35mm">c</td>
+        <td style="width: 50mm" colspan="2">
+          d
+        </td>
+        <td style="width:22mm" class="right">
+          e
+        </td>
+        <td style="width:25mm" class="right">
+          f
+        </td>
+        <td style="width:25mm" class="right">
+          g
+        </td>
+      </tr>
+    </thead>
+  </table>
+</body>
+
+</html>

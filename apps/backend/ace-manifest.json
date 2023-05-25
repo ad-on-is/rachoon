@@ -1,0 +1,520 @@
+{
+  "commands": {
+    "dump:rcfile": {
+      "settings": {},
+      "commandPath": "@adonisjs/core/build/commands/DumpRc",
+      "commandName": "dump:rcfile",
+      "description": "Dump contents of .adonisrc.json file along with defaults",
+      "args": [],
+      "aliases": [],
+      "flags": []
+    },
+    "list:routes": {
+      "settings": {
+        "loadApp": true,
+        "stayAlive": true
+      },
+      "commandPath": "@adonisjs/core/build/commands/ListRoutes/index",
+      "commandName": "list:routes",
+      "description": "List application routes",
+      "args": [],
+      "aliases": [],
+      "flags": [
+        {
+          "name": "verbose",
+          "propertyName": "verbose",
+          "type": "boolean",
+          "description": "Display more information"
+        },
+        {
+          "name": "reverse",
+          "propertyName": "reverse",
+          "type": "boolean",
+          "alias": "r",
+          "description": "Reverse routes display"
+        },
+        {
+          "name": "methods",
+          "propertyName": "methodsFilter",
+          "type": "array",
+          "alias": "m",
+          "description": "Filter routes by method"
+        },
+        {
+          "name": "patterns",
+          "propertyName": "patternsFilter",
+          "type": "array",
+          "alias": "p",
+          "description": "Filter routes by the route pattern"
+        },
+        {
+          "name": "names",
+          "propertyName": "namesFilter",
+          "type": "array",
+          "alias": "n",
+          "description": "Filter routes by route name"
+        },
+        {
+          "name": "json",
+          "propertyName": "json",
+          "type": "boolean",
+          "description": "Output as JSON"
+        },
+        {
+          "name": "table",
+          "propertyName": "table",
+          "type": "boolean",
+          "description": "Output as Table"
+        },
+        {
+          "name": "max-width",
+          "propertyName": "maxWidth",
+          "type": "number",
+          "description": "Specify maximum rendering width. Ignored for JSON Output"
+        }
+      ]
+    },
+    "generate:key": {
+      "settings": {},
+      "commandPath": "@adonisjs/core/build/commands/GenerateKey",
+      "commandName": "generate:key",
+      "description": "Generate a new APP_KEY secret",
+      "args": [],
+      "aliases": [],
+      "flags": []
+    },
+    "repl": {
+      "settings": {
+        "loadApp": true,
+        "environment": "repl",
+        "stayAlive": true
+      },
+      "commandPath": "@adonisjs/repl/build/commands/AdonisRepl",
+      "commandName": "repl",
+      "description": "Start a new REPL session",
+      "args": [],
+      "aliases": [],
+      "flags": []
+    },
+    "db:seed": {
+      "settings": {
+        "loadApp": true
+      },
+      "commandPath": "@adonisjs/lucid/build/commands/DbSeed",
+      "commandName": "db:seed",
+      "description": "Execute database seeders",
+      "args": [],
+      "aliases": [],
+      "flags": [
+        {
+          "name": "connection",
+          "propertyName": "connection",
+          "type": "string",
+          "description": "Define a custom database connection for the seeders",
+          "alias": "c"
+        },
+        {
+          "name": "interactive",
+          "propertyName": "interactive",
+          "type": "boolean",
+          "description": "Run seeders in interactive mode",
+          "alias": "i"
+        },
+        {
+          "name": "files",
+          "propertyName": "files",
+          "type": "array",
+          "description": "Define a custom set of seeders files names to run",
+          "alias": "f"
+        },
+        {
+          "name": "compact-output",
+          "propertyName": "compactOutput",
+          "type": "boolean",
+          "description": "A compact single-line output"
+        }
+      ]
+    },
+    "make:model": {
+      "settings": {
+        "loadApp": true
+      },
+      "commandPath": "@adonisjs/lucid/build/commands/MakeModel",
+      "commandName": "make:model",
+      "description": "Make a new Lucid model",
+      "args": [
+        {
+          "type": "string",
+          "propertyName": "name",
+          "name": "name",
+          "required": true,
+          "description": "Name of the model class"
+        }
+      ],
+      "aliases": [],
+      "flags": [
+        {
+          "name": "migration",
+          "propertyName": "migration",
+          "type": "boolean",
+          "alias": "m",
+          "description": "Generate the migration for the model"
+        },
+        {
+          "name": "controller",
+          "propertyName": "controller",
+          "type": "boolean",
+          "alias": "c",
+          "description": "Generate the controller for the model"
+        },
+        {
+          "name": "factory",
+          "propertyName": "factory",
+          "type": "boolean",
+          "alias": "f",
+          "description": "Generate a factory for the model"
+        }
+      ]
+    },
+    "make:migration": {
+      "settings": {
+        "loadApp": true
+      },
+      "commandPath": "@adonisjs/lucid/build/commands/MakeMigration",
+      "commandName": "make:migration",
+      "description": "Make a new migration file",
+      "args": [
+        {
+          "type": "string",
+          "propertyName": "name",
+          "name": "name",
+          "required": true,
+          "description": "Name of the migration file"
+        }
+      ],
+      "aliases": [],
+      "flags": [
+        {
+          "name": "connection",
+          "propertyName": "connection",
+          "type": "string",
+          "description": "The connection flag is used to lookup the directory for the migration file"
+        },
+        {
+          "name": "folder",
+          "propertyName": "folder",
+          "type": "string",
+          "description": "Pre-select a migration directory"
+        },
+        {
+          "name": "create",
+          "propertyName": "create",
+          "type": "string",
+          "description": "Define the table name for creating a new table"
+        },
+        {
+          "name": "table",
+          "propertyName": "table",
+          "type": "string",
+          "description": "Define the table name for altering an existing table"
+        }
+      ]
+    },
+    "make:seeder": {
+      "settings": {},
+      "commandPath": "@adonisjs/lucid/build/commands/MakeSeeder",
+      "commandName": "make:seeder",
+      "description": "Make a new Seeder file",
+      "args": [
+        {
+          "type": "string",
+          "propertyName": "name",
+          "name": "name",
+          "required": true,
+          "description": "Name of the seeder class"
+        }
+      ],
+      "aliases": [],
+      "flags": []
+    },
+    "make:factory": {
+      "settings": {},
+      "commandPath": "@adonisjs/lucid/build/commands/MakeFactory",
+      "commandName": "make:factory",
+      "description": "Make a new factory",
+      "args": [
+        {
+          "type": "string",
+          "propertyName": "model",
+          "name": "model",
+          "required": true,
+          "description": "The name of the model"
+        }
+      ],
+      "aliases": [],
+      "flags": [
+        {
+          "name": "model-path",
+          "propertyName": "modelPath",
+          "type": "string",
+          "description": "The path to the model"
+        },
+        {
+          "name": "exact",
+          "propertyName": "exact",
+          "type": "boolean",
+          "description": "Create the factory with the exact name as provided",
+          "alias": "e"
+        }
+      ]
+    },
+    "db:wipe": {
+      "settings": {
+        "loadApp": true
+      },
+      "commandPath": "@adonisjs/lucid/build/commands/DbWipe",
+      "commandName": "db:wipe",
+      "description": "Drop all tables, views and types in database",
+      "args": [],
+      "aliases": [],
+      "flags": [
+        {
+          "name": "connection",
+          "propertyName": "connection",
+          "type": "string",
+          "description": "Define a custom database connection",
+          "alias": "c"
+        },
+        {
+          "name": "drop-views",
+          "propertyName": "dropViews",
+          "type": "boolean",
+          "description": "Drop all views"
+        },
+        {
+          "name": "drop-types",
+          "propertyName": "dropTypes",
+          "type": "boolean",
+          "description": "Drop all custom types (Postgres only)"
+        },
+        {
+          "name": "force",
+          "propertyName": "force",
+          "type": "boolean",
+          "description": "Explicitly force command to run in production"
+        }
+      ]
+    },
+    "migration:run": {
+      "settings": {
+        "loadApp": true
+      },
+      "commandPath": "@adonisjs/lucid/build/commands/Migration/Run",
+      "commandName": "migration:run",
+      "description": "Migrate database by running pending migrations",
+      "args": [],
+      "aliases": [],
+      "flags": [
+        {
+          "name": "connection",
+          "propertyName": "connection",
+          "type": "string",
+          "description": "Define a custom database connection",
+          "alias": "c"
+        },
+        {
+          "name": "force",
+          "propertyName": "force",
+          "type": "boolean",
+          "description": "Explicitly force to run migrations in production"
+        },
+        {
+          "name": "dry-run",
+          "propertyName": "dryRun",
+          "type": "boolean",
+          "description": "Do not run actual queries. Instead view the SQL output"
+        },
+        {
+          "name": "compact-output",
+          "propertyName": "compactOutput",
+          "type": "boolean",
+          "description": "A compact single-line output"
+        }
+      ]
+    },
+    "migration:rollback": {
+      "settings": {
+        "loadApp": true
+      },
+      "commandPath": "@adonisjs/lucid/build/commands/Migration/Rollback",
+      "commandName": "migration:rollback",
+      "description": "Rollback migrations to a specific batch number",
+      "args": [],
+      "aliases": [],
+      "flags": [
+        {
+          "name": "connection",
+          "propertyName": "connection",
+          "type": "string",
+          "description": "Define a custom database connection",
+          "alias": "c"
+        },
+        {
+          "name": "force",
+          "propertyName": "force",
+          "type": "boolean",
+          "description": "Explictly force to run migrations in production"
+        },
+        {
+          "name": "dry-run",
+          "propertyName": "dryRun",
+          "type": "boolean",
+          "description": "Do not run actual queries. Instead view the SQL output"
+        },
+        {
+          "name": "batch",
+          "propertyName": "batch",
+          "type": "number",
+          "description": "Define custom batch number for rollback. Use 0 to rollback to initial state"
+        },
+        {
+          "name": "compact-output",
+          "propertyName": "compactOutput",
+          "type": "boolean",
+          "description": "A compact single-line output"
+        }
+      ]
+    },
+    "migration:status": {
+      "settings": {
+        "loadApp": true
+      },
+      "commandPath": "@adonisjs/lucid/build/commands/Migration/Status",
+      "commandName": "migration:status",
+      "description": "View migrations status",
+      "args": [],
+      "aliases": [],
+      "flags": [
+        {
+          "name": "connection",
+          "propertyName": "connection",
+          "type": "string",
+          "description": "Define a custom database connection",
+          "alias": "c"
+        }
+      ]
+    },
+    "migration:reset": {
+      "settings": {
+        "loadApp": true
+      },
+      "commandPath": "@adonisjs/lucid/build/commands/Migration/Reset",
+      "commandName": "migration:reset",
+      "description": "Rollback all migrations",
+      "args": [],
+      "aliases": [],
+      "flags": [
+        {
+          "name": "connection",
+          "propertyName": "connection",
+          "type": "string",
+          "description": "Define a custom database connection",
+          "alias": "c"
+        },
+        {
+          "name": "force",
+          "propertyName": "force",
+          "type": "boolean",
+          "description": "Explicitly force command to run in production"
+        },
+        {
+          "name": "dry-run",
+          "propertyName": "dryRun",
+          "type": "boolean",
+          "description": "Do not run actual queries. Instead view the SQL output"
+        }
+      ]
+    },
+    "migration:refresh": {
+      "settings": {
+        "loadApp": true
+      },
+      "commandPath": "@adonisjs/lucid/build/commands/Migration/Refresh",
+      "commandName": "migration:refresh",
+      "description": "Rollback and migrate database",
+      "args": [],
+      "aliases": [],
+      "flags": [
+        {
+          "name": "connection",
+          "propertyName": "connection",
+          "type": "string",
+          "description": "Define a custom database connection",
+          "alias": "c"
+        },
+        {
+          "name": "force",
+          "propertyName": "force",
+          "type": "boolean",
+          "description": "Explicitly force command to run in production"
+        },
+        {
+          "name": "dry-run",
+          "propertyName": "dryRun",
+          "type": "boolean",
+          "description": "Do not run actual queries. Instead view the SQL output"
+        },
+        {
+          "name": "seed",
+          "propertyName": "seed",
+          "type": "boolean",
+          "description": "Run seeders"
+        }
+      ]
+    },
+    "migration:fresh": {
+      "settings": {
+        "loadApp": true
+      },
+      "commandPath": "@adonisjs/lucid/build/commands/Migration/Fresh",
+      "commandName": "migration:fresh",
+      "description": "Drop all tables and re-migrate the database",
+      "args": [],
+      "aliases": [],
+      "flags": [
+        {
+          "name": "connection",
+          "propertyName": "connection",
+          "type": "string",
+          "description": "Define a custom database connection",
+          "alias": "c"
+        },
+        {
+          "name": "force",
+          "propertyName": "force",
+          "type": "boolean",
+          "description": "Explicitly force command to run in production"
+        },
+        {
+          "name": "seed",
+          "propertyName": "seed",
+          "type": "boolean",
+          "description": "Run seeders"
+        },
+        {
+          "name": "drop-views",
+          "propertyName": "dropViews",
+          "type": "boolean",
+          "description": "Drop all views"
+        },
+        {
+          "name": "drop-types",
+          "propertyName": "dropTypes",
+          "type": "boolean",
+          "description": "Drop all custom types (Postgres only)"
+        }
+      ]
+    }
+  },
+  "aliases": {}
+}

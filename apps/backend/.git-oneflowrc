@@ -1,0 +1,11 @@
+{
+  "main": "* main",
+  "features": "feature",
+  "releases": "release",
+  "hotfixes": "hotfix",
+  "strategy": "rebase-no-ff",
+  "interactive": true,
+  "pushAfterMerge": false,
+  "deleteAfterMerge": false,
+  "tagCommit": true
+}

@@ -1,0 +1,75 @@
+{
+  "name": "rachoon",
+  "version": "31.17.0",
+  "private": true,
+  "scripts": {
+    "dev": "node ace serve --watch",
+    "build": "node ace build --production",
+    "start": "node server.js",
+    "lint": "eslint . --ext=.ts",
+    "format": "prettier --write ."
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:adonis/typescriptApp",
+      "prettier"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error"
+      ]
+    }
+  },
+  "eslintIgnore": [
+    "build"
+  ],
+  "prettier": {
+    "trailingComma": "es5",
+    "semi": false,
+    "singleQuote": true,
+    "useTabs": false,
+    "quoteProps": "consistent",
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "printWidth": 100
+  },
+  "devDependencies": {
+    "@adonisjs/assembler": "^5.9.2",
+    "@faker-js/faker": "^7.5.0",
+    "@japa/preset-adonis": "^1.2.0",
+    "@japa/runner": "^2.2.1",
+    "adonis-preset-ts": "^2.1.0",
+    "eslint": "^8.24.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-adonis": "^2.1.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "pino-pretty": "^9.1.0",
+    "prettier": "^2.7.1",
+    "typescript": "~4.6",
+    "youch": "^3.2.2",
+    "youch-terminal": "^2.1.5"
+  },
+  "dependencies": {
+    "@adonisjs/auth": "^8.2.2",
+    "@adonisjs/core": "^5.8.6",
+    "@adonisjs/lucid": "^18.1.1",
+    "@adonisjs/repl": "^3.1.11",
+    "@adonisjs/view": "^6.2.0",
+    "adonis-lucid-soft-deletes": "^1.4.3",
+    "hashids": "^2.2.10",
+    "lodash": "^4.17.21",
+    "luxon": "^3.0.4",
+    "mustache": "^4.2.0",
+    "nunjucks": "^3.2.3",
+    "pdf2pic": "^2.1.4",
+    "pg": "^8.8.0",
+    "phc-argon2": "^1.1.3",
+    "proxy-addr": "^2.0.7",
+    "puppeteer": "^18.0.5",
+    "reflect-metadata": "^0.1.13",
+    "source-map-support": "^0.5.21"
+  }
+}

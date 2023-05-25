@@ -1,0 +1,9 @@
+node_modules
+build
+coverage
+.vscode
+.DS_STORE
+.env
+tmp
+build.sh
+captain-definition
