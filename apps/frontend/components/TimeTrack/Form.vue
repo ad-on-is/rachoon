@@ -16,12 +16,12 @@
 
 	const weekDay = (d: number) => dateFns.format(dateFns.setDate(monthDate.value, d), 'EEE')
 
-	const todayClass = (d: number) => (dateFns.isToday(dateFns.setDate(monthDate.value, d)) ? 'bg-warning bg-opacity-20' : '')
+	const todayClass = (d: number) => (dateFns.isToday(dateFns.setDate(monthDate.value, d)) ? 'bg-error bg-opacity-20' : '')
 </script>
 
 <template>
 	<div class="flex flex-wrap gap-1 mb-10">
-		<div v-for="d of days" class="text-xs cursor-pointer" :class="weekDay(d) === 'Sun' ? 'mr-3' : ''" @click="useTimeTrack().setDay(d)">
+		<div v-for="d of days" class="text-xs cursor-pointer !border-none" :class="weekDay(d) === 'Sun' ? 'mr-3' : ''" @click="useTimeTrack().setDay(d)">
 			<Popper arrow hover>
 				<div :class="todayClass(d)">
 					<div class="text-center text-xs" :class="`${dayClass(d)}`">{{ weekDay(d).slice(0, -2) }}</div>
