@@ -1,5 +1,7 @@
 import camelcaseKeys from 'camelcase-keys'
 
+type FetchMethod = 'get' | 'post' | 'put' | 'delete' | 'patch' | 'head' | 'options'
+
 export default class HttpClient {
 	public static get = async (url: string, notify: false | { title: string; text: string; type?: string } = false) => await this.doFetch(url, { method: 'get' }, notify)
 	public static del = async (url: string, notify: false | { title: string; text: string; type?: string } = false) => await this.doFetch(url, { method: 'delete' }, notify)
@@ -8,7 +10,7 @@ export default class HttpClient {
 	public static put = async (url: string, data: any, notify: false | { title: string; text: string; type?: string } = false) =>
 		await this.doFetch(url, { method: 'put', body: data }, notify)
 
-	public static doFetch = async (url: string, opts: { method: string; body?: any }, notify: false | { title: string; text: string; type?: string } = false) => {
+	public static doFetch = async (url: string, opts: { method: FetchMethod; body?: any }, notify: false | { title: string; text: string; type?: string } = false) => {
 		const baseUrl = useRuntimeConfig().public.apiURL
 		try {
 			const res = await $fetch.raw(`${baseUrl}${url}`, {

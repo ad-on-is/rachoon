@@ -2,10 +2,9 @@ import { Project } from '~~/models/project'
 import { TimeTrack } from '~~/models/timeTrack'
 import * as dateFns from 'date-fns'
 export default defineStore('timetrack', () => {
-	const timeTracks = ref([])
+	const timeTracks = ref<Array<TimeTrack>>([])
 	const loading = ref(false)
 	const projects = ref([])
-	const clientId = ''
 	const view = ref('month')
 	const timeTrack = ref(new TimeTrack())
 	const day = computed(() => dateFns.getDate(monthDate.value))

@@ -16,7 +16,7 @@
 
 	const weekDay = (d: number) => dateFns.format(dateFns.setDate(monthDate.value, d), 'EEE')
 
-	const todayClass = (d: number) => (dateFns.isToday(dateFns.setDate(monthDate.value, d)) ? 'border-primary border' : '')
+	const todayClass = (d: number) => (dateFns.isToday(dateFns.setDate(monthDate.value, d)) ? 'bg-warning bg-opacity-20' : '')
 </script>
 
 <template>
