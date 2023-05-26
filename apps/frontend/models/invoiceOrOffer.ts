@@ -97,7 +97,6 @@ class InvoiceOrOffer implements InvoiceOrOfferType {
 
 	constructor(json?: any) {
 		if (json) {
-			console.log(json)
 			_.merge(this, json)
 
 			this.data.positions.map((p) => (p.focused = false))

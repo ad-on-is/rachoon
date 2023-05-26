@@ -1,5 +1,5 @@
 {
-  "name": "rachoon",
+  "name": "rachoon-backend",
   "version": "31.17.0",
   "private": true,
   "scripts": {
@@ -63,12 +63,13 @@
     "lodash": "^4.17.21",
     "luxon": "^3.0.4",
     "mustache": "^4.2.0",
+    "node-appwrite": "^9.0.0",
     "nunjucks": "^3.2.3",
     "pdf2pic": "^2.1.4",
     "pg": "^8.8.0",
     "phc-argon2": "^1.1.3",
     "proxy-addr": "^2.0.7",
-    "puppeteer": "^18.0.5",
+    "puppeteer": "^20.4.0",
     "reflect-metadata": "^0.1.13",
     "source-map-support": "^0.5.21"
   }

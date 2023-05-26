@@ -107,14 +107,14 @@ todo:
 								{{ useFormat.toCurrency(io.offer.data.total) }}
 								<br />
 								<span class="badge badge-xs badge-outline badge-warning opacity-30 py-2 mr-2"
-									><a :href="`/offers/${io.offer.id}`">{{ io.offer.number }}</a></span
+									><NuxtLink :href="`/offers/${io.offer.id}`">{{ io.offer.number }}</NuxtLink></span
 								>
 							</span>
 							<span v-if="io.invoices.length > 0" class="text-warning">
 								{{ useFormat.toCurrency(io.invoices.reduce((p, c) => (p += c.data.total), 0)) }}
 								<br />
 								<span class="badge badge-xs badge-outline badge-warning opacity-30 py-2 mr-2" v-for="inv in io.invoices">
-									<a :href="`/invoices/${inv.id}`">{{ inv.number }}</a></span
+									<NuxtLink :href="`/invoices/${inv.id}`">{{ inv.number }}</NuxtLink></span
 								>
 							</span>
 							<span v-else></span>

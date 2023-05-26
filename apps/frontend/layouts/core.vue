@@ -15,27 +15,27 @@
 				<div class="flex-none">
 					<ul class="menu menu-horizontal p-0 gap-2">
 						<li>
-							<NuxtLink href="/timetracks" class="h-8 p-5" :class="useRoute().fullPath.includes('/timetrack') ? 'active' : ''"
+							<NuxtLink href="/timetracks" class="h-8 p-5 rounded-lg" :class="useRoute().fullPath.includes('/timetrack') ? 'active' : ''"
 								><FaIcon icon="fa-solid fa-clock" /> TimeTrack
 							</NuxtLink>
 						</li>
 						<li>
-							<NuxtLink href="/clients" class="h-8 p-5" :class="useRoute().fullPath.includes('/clients') ? 'active' : ''"
+							<NuxtLink href="/clients" class="h-8 p-5 rounded-lg" :class="useRoute().fullPath.includes('/clients') ? 'active' : ''"
 								><FaIcon icon="fa-solid fa-users" /> Clients
 							</NuxtLink>
 						</li>
 						<li>
-							<NuxtLink href="/offers" class="h-8 p-5" :class="useRoute().fullPath.includes('/offers') ? 'active' : ''">
+							<NuxtLink href="/offers" class="h-8 p-5 rounded-lg" :class="useRoute().fullPath.includes('/offers') ? 'active' : ''">
 								<FaIcon icon="fa-solid fa-file-invoice" /> Offers
 							</NuxtLink>
 						</li>
 						<li>
-							<NuxtLink href="/invoices" class="h-8 p-5" :class="useRoute().fullPath.includes('/invoices') ? 'active' : ''">
+							<NuxtLink href="/invoices" class="h-8 p-5 rounded-lg" :class="useRoute().fullPath.includes('/invoices') ? 'active' : ''">
 								<FaIcon icon="fa-solid fa-file-invoice-dollar" /> Invoices
 							</NuxtLink>
 						</li>
 						<li>
-							<NuxtLink href="/users" class="h-8 p-5" :class="useRoute().fullPath.includes('/users') ? 'active' : ''">
+							<NuxtLink href="/users" class="h-8 p-5 rounded-lg" :class="useRoute().fullPath.includes('/users') ? 'active' : ''">
 								<FaIcon icon="fa-solid fa-user" /> Users
 							</NuxtLink>
 						</li>
@@ -55,15 +55,11 @@
 
 					<ul tabindex="0" class="dropdown-content menu menu-compact p-2 shadow bg-base-300 border-error rounded-box w-52">
 						<li>
-							<NuxtLink href="/profile" :class="useRoute().fullPath.includes('/profile') ? 'active' : ''"
-								><FaIcon icon="fa-regular fa-user" /> Your profile</NuxtLink
-							>
+							<NuxtLink href="/profile" :class="useRoute().fullPath.includes('/profile') ? 'active' : ''"><FaIcon icon="fa-regular fa-user" /> Your profile</NuxtLink>
 						</li>
 
 						<li>
-							<NuxtLink href="/settings" :class="useRoute().fullPath.includes('/settings') ? 'active' : ''">
-								<FaIcon icon="fa-solid fa-gears" /> Settings
-							</NuxtLink>
+							<NuxtLink href="/settings" :class="useRoute().fullPath.includes('/settings') ? 'active' : ''"> <FaIcon icon="fa-solid fa-gears" /> Settings </NuxtLink>
 						</li>
 						<li>
 							<NuxtLink href="/logout" class="text-error"><FaIcon icon="fa-solid fa-right-from-bracket" /> Logout</NuxtLink>
