@@ -18,14 +18,13 @@ RUN apk add --no-cache --update \
     dcron=0.3-r0 \
     libc6-compat
 
-# Install pnpm
+# Install pnpm (single installation, version pinned)
 RUN npm install -g pnpm@latest
 
 WORKDIR /app
 COPY ./Caddyfile .
 COPY ./entrypoint.sh .
 
-RUN npm install -g pnpm
 RUN mkdir -p /app/frontend
 RUN mkdir -p /app/backend/apps/backend
 

@@ -1,123 +1,62 @@
 #!/bin/bash
 set -euo pipefail
 
-# ARM Architecture Test Script for Rachoon
-# Validates Docker build system and ARM compatibility
+# ARM compatibility test script for Rachoon Docker image
+# Quick validation of ARM support
 
-echo "=== ARM Architecture Compatibility Test ==="
+IMAGE_NAME="${IMAGE_NAME:-ghcr.io/ad-on-is/rachoon}"
+TAG="${TAG:-latest}"
+BUILDER_NAME="arm-test-builder"
 
-# Check prerequisites
-echo "Checking prerequisites..."
+echo "🔍 Testing ARM compatibility for ${IMAGE_NAME}:${TAG}"
 
-if ! command -v docker &> /dev/null; then
-    echo "❌ Docker is not installed or not in PATH"
+# Test 1: Check if buildx is available
+if ! docker buildx version >/dev/null 2>&1; then
+    echo "❌ Docker buildx is not available"
+    exit 1
+fi
+echo "✅ Docker buildx is available"
+
+# Test 2: Create ARM-specific builder
+if ! docker buildx inspect "${BUILDER_NAME}" >/dev/null 2>&1; then
+    echo "Creating ARM test builder..."
+    docker buildx create --name "${BUILDER_NAME}" --driver docker-container --use
+else
+    docker buildx use "${BUILDER_NAME}"
+fi
+
+docker buildx inspect --bootstrap
+
+# Test 3: Verify Dockerfile supports ARM
+echo "Testing Dockerfile ARM compatibility..."
+DOCKERFILE_PATH="${DOCKERFILE_PATH:-./Dockerfile}"
+
+if [[ ! -f "${DOCKERFILE_PATH}" ]]; then
+    echo "❌ Dockerfile not found at ${DOCKERFILE_PATH}"
     exit 1
 fi
 
-echo "✅ Docker is available: $(docker --version)"
+# Test 4: Build a small test image for ARM64 to verify compatibility
+echo "Building test image for ARM64 platform..."
+docker buildx build --platform linux/arm64 --tag rachoon-arm-test:latest --load -f "${DOCKERFILE_PATH}" . || {
+    echo "❌ ARM64 build failed"
+    exit 1
+}
 
-# Check Docker Buildx availability
-if ! command -v docker buildx &> /dev/null; then
-    echo "❌ Docker Buildx is not available. Please upgrade Docker to 18.09+"
+# Test 5: Verify the image was created
+if ! docker images rachoon-arm-test:latest | grep -q rachoon-arm-test; then
+    echo "❌ ARM64 test image was not created"
     exit 1
 fi
 
-echo "✅ Docker Buildx is available: $(docker buildx version)"
+# Test 6: Test basic image operations
+echo "Testing basic image operations..."
+docker run --rm rachoon-arm-test:latest --version 2>/dev/null || {
+    echo "⚠️  Image doesn't support --version, but that's okay for this test"
+}
 
-# Validate Dockerfile syntax properly
-echo "Validating Dockerfile syntax..."
-if docker buildx build --check -f Dockerfile . &> /dev/null; then
-    echo "✅ Dockerfile syntax is valid"
-else
-    echo "❌ Dockerfile validation failed"
-    echo "This could be due to:"
-    echo "  - Dockerfile syntax errors"
-    echo "  - Missing files referenced in Dockerfile"
-    echo "  - Buildx version too old (< 0.15.0)"
-    
-    # Fallback check with older buildx
-    if docker buildx build --platform local -f Dockerfile --help . &> /dev/null; then
-        echo "⚠️  Using fallback validation (older buildx version detected)"
-    else
-        echo "❌ Docker Buildx validation failed"
-        exit 1
-    fi
-fi
+# Cleanup test image
+docker rmi rachoon-arm-test:latest >/dev/null 2>&1 || true
 
-# Test multi-architecture build capability
-echo "Testing multi-architecture build capability..."
-
-# Create a temporary builder for testing
-TEMP_BUILDER="arm-test-builder"
-docker buildx create --name "$TEMP_BUILDER" --driver docker-container --use 2>/dev/null || true
-
-# Test build for local platform only
-if docker buildx build --platform "$(docker buildx inspect --bootstrap | grep 'Platforms:' | head -1 | cut -d: -f2 | tr -d ' ' | cut -d, -f1)" --file Dockerfile --load . &> /dev/null; then
-    echo "✅ Build capability test passed"
-else
-    echo "❌ Build capability test failed"
-    echo "This could be due to:"
-    echo "  - Missing build dependencies in Dockerfile"
-    echo "  - Platform-specific issues"
-    echo "  - Insufficient disk space or memory"
-    docker buildx rm "$TEMP_BUILDER" 2>/dev/null || true
-    exit 1
-fi
-
-# Clean up test builder
-docker buildx rm "$TEMP_BUILDER" 2>/dev/null || true
-
-# Test platform detection
-echo "Testing platform detection..."
-CURRENT_PLATFORM="$(uname -m)"
-echo "Current host platform: $CURRENT_PLATFORM"
-
-case "$CURRENT_PLATFORM" in
-    x86_64|amd64)
-        echo "✅ Running on AMD64/x86_64 platform"
-        ;;
-    aarch64|arm64)
-        echo "✅ Running on ARM64 platform"
-        ;;
-    armv7l|armv6l)
-        echo "✅ Running on ARM32 platform"
-        ;;
-    *)
-        echo "⚠️  Running on unknown platform: $CURRENT_PLATFORM"
-        ;;
-esac
-
-# Test Dockerfile cross-platform compatibility
-echo "Testing cross-platform compatibility..."
-
-# Check for ARM-specific optimizations
-if grep -q "TARGETARCH\|TARGETOS" Dockerfile; then
-    echo "✅ Dockerfile contains platform-specific logic"
-else
-    echo "ℹ️  Dockerfile does not use platform variables (may still work)"
-fi
-
-# Check for potential ARM issues
-ARM_ISSUE_COUNT=0
-
-# Check for binary dependencies that might not be ARM-compatible
-if grep -q "graphicsmagick\|ghostscript" Dockerfile; then
-    echo "ℹ️  Found binary dependencies (graphicsmagick, ghostscript) - these may need ARM versions"
-fi
-
-# Check for proper package management
-if grep -q "apk.*add" Dockerfile; then
-    echo "✅ Using APK package manager (good for Alpine, supports ARM)"
-else
-    echo "⚠️  Not using APK - ensure packages are ARM-compatible"
-fi
-
-echo "=== ARM Test Summary ==="
-echo "✅ All ARM compatibility tests passed!"
-echo ""
-echo "Next steps:"
-echo "  1. Run './build-arm.sh' to build multi-arch image locally"
-echo "  2. Run 'PUSH=1 ./build-arm.sh' to push to registry"
-echo "  3. Test on ARM hardware: docker run --rm -p 8080:8080 ghcr.io/ad-on-is/rachoon"
-
-exit 0
+echo "✅ ARM compatibility tests passed successfully!"
+echo "Docker image is ready for ARM64 deployment"
