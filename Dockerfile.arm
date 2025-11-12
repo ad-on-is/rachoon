@@ -1,26 +1,29 @@
 # Multi-architecture Dockerfile for Rachoon
 # Supports both AMD64 and ARM64 (Apple Silicon)
 
+# Use explicit multi-architecture base image
 FROM --platform=$BUILDPLATFORM node:23-alpine AS base
 
 # Set platform-specific variables
 ARG TARGETOS
 ARG TARGETARCH
 
+# Install dependencies with cross-platform compatibility
+FROM base AS dependencies
 USER root
 
-# Install system dependencies with cross-platform compatibility
-# Using specific versions for better ARM compatibility
+# Install system dependencies compatible with ARM
 RUN apk add --no-cache --update \
-    graphicsmagick=1.3.40-r1 \
-    ghostscript=10.04.1-r0 \
-    caddy=2.8.4-r1 \
-    dcron=0.3-r0 \
+    graphicsmagick \
+    ghostscript \
+    caddy \
+    dcron \
     libc6-compat
 
-# Install pnpm (single installation, version pinned)
-RUN npm install -g pnpm@latest
+# Install pnpm
+RUN npm install -g pnpm
 
+# Setup app structure
 WORKDIR /app
 COPY ./Caddyfile .
 COPY ./entrypoint.sh .
@@ -28,9 +31,8 @@ COPY ./entrypoint.sh .
 RUN mkdir -p /app/frontend
 RUN mkdir -p /app/backend/apps/backend
 
-# Copy built frontend and backend files
+# Copy source files
 COPY ./apps/frontend/.output /app/frontend
-
 COPY ./apps/backend/build /app/backend/apps/backend
 COPY ./apps/backend/resources /app/backend/apps/backend
 COPY ./packages /app/backend/packages
@@ -39,8 +41,19 @@ COPY ./pnpm-workspace.yaml /app/backend/
 
 # Install production dependencies
 WORKDIR /app/backend/apps/backend
-RUN pnpm install --prod --frozen-lockfile --ignore-scripts
+RUN pnpm install --prod --frozen-lockfile
+
+# Final stage
+FROM base AS runtime
+USER root
+
+# Copy installed dependencies from dependencies stage
+COPY --from=dependencies /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY --from=dependencies /usr/local/bin/pnpm /usr/local/bin/pnpm
+COPY --from=dependencies /app /app
+
+# Ensure proper permissions
+RUN chmod +x /app/entrypoint.sh
 
 WORKDIR /app
-
 ENTRYPOINT ["./entrypoint.sh"]

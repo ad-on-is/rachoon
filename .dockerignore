@@ -1,0 +1,57 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+coverage
+
+# Turbo
+.turbo
+
+# Vercel
+.vercel
+
+# Build Outputs
+.next/
+out/
+build
+dist
+
+# Docker related
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Git
+.git
+.gitignore
+.github
+
+# Documentation
+*.md
+docs/
+
+# Misc
+.DS_Store
+*.pem
+deploy.sh
+*.log
+
+# CI/CD
+.github
+.gitlab-ci.yml
+Jenkinsfile
+
+# ARM build artifacts
+build-arm.sh
+test-arm*.sh
+eval.sh
+Makefile
