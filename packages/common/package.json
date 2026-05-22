@@ -55,6 +55,21 @@
       "types": "./dist/User.d.ts",
       "import": "./dist/User.js",
       "require": "./dist/User.cjs"
+    },
+    "./Settings": {
+      "types": "./dist/Settings.d.ts",
+      "import": "./dist/Settings.js",
+      "require": "./dist/Settings.cjs"
+    },
+    "./Organization": {
+      "types": "./dist/Organization.d.ts",
+      "import": "./dist/Organization.js",
+      "require": "./dist/Organization.cjs"
+    },
+    "./Template": {
+      "types": "./dist/Template.d.ts",
+      "import": "./dist/Template.js",
+      "require": "./dist/Template.cjs"
     }
   },
   "dependencies": {

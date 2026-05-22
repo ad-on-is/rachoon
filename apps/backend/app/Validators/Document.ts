@@ -16,12 +16,14 @@ class DocumentValidator {
       taxOption: schema.object().anyMembers(),
       date: schema.date(),
       dueDate: schema.date(),
+      deliveryDate: schema.date.optional(),
       headingText: schema.string.optional(),
       footerText: schema.string.optional(),
       total: schema.number(),
       net: schema.number(),
       netNoDiscount: schema.number(),
       dueDays: schema.number(),
+      eInvoiceType: schema.string.optional(),
     }),
   })
 

@@ -44,7 +44,7 @@ onClickOutside(formRef, () => {
     </button>
   </div>
   <div class="divider"></div>
-  <table class="table table-compact w-full shadow-lg table-info" v-if="discountsCharges.length > 0">
+  <table class="table document-line table-compact w-full shadow-lg table-info" v-if="discountsCharges.length > 0">
     <thead>
       <tr>
         <th width="20"></th>

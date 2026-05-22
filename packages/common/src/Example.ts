@@ -9,6 +9,7 @@ class Example {
       info: {
         vat: "XX-12345",
         addition: "",
+        reference: "",
       },
       contactPerson: {
         fullName: "Madison Blake",

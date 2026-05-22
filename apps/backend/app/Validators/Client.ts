@@ -17,6 +17,7 @@ export default class ClientValidator {
       info: schema.object.optional().members({
         vat: schema.string.optional(),
         addition: schema.string.optional(),
+        reference: schema.string.optional(),
       }),
       contactPerson: schema.object().members({
         fullName: schema.string.optional(),

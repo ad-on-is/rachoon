@@ -15,7 +15,7 @@ position().unit = position().unit || units.filter((u) => u.default)[0].title;
   <tr>
     <td colspan="8">
       <div class="collapse" :class="{ 'collapse-open': position().focused }">
-        <table class="table overflow-x-scroll">
+        <table class="table overflow-x-scroll document-line">
           <tbody>
             <tr>
               <td class="handle" width="20">

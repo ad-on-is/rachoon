@@ -233,9 +233,14 @@
                     <td class="has-text-right">{{format.currency(document.data.net)}}</td>
                   </tr>
                   {%endfor%}
+
                   {% for rate,tax in document.data.taxes %}
                   <tr>
-                  <td>{{ t('incl. tax') }} {{rate}}%</td>
+                  {% if document.data.taxOption.applicable %}
+                    <td>{{ t('incl. tax') }} {{rate}}%</td>
+                  {% else %}
+                    <td>{{ t(document.data.taxOption.title) }} {{ rate ~ "%" if rate != "0" }}</td>
+                  {% endif %}
                   <td class="has-text-right">{{format.currency(tax)}}</td>
                   </tr>
                   {%endfor%}

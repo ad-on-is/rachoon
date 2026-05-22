@@ -64,7 +64,7 @@ export default class Renderer {
     html: string,
     isImage: boolean = false,
     downScaleFactor: number = 1
-  ): Promise<string[]> {
+  ): Promise<Buffer[]> {
     const f = new FormData()
     f.append('files', new Blob([html], { type: 'text/html' }), 'index.html')
     f.append('printBackground', 'true')
@@ -92,11 +92,11 @@ export default class Renderer {
           scale: 3,
           render: (options) => this.renderFunction(options, downScaleFactor),
         })
-        images.push('data:image/png;base64' + ',' + Buffer.from(p.data).toString('base64'))
+        images.push(Buffer.from(p.data))
       }
       return images
     }
 
-    return ['data:application/pdf;base64,' + buffer.toString('base64')]
+    return [buffer]
   }
 }

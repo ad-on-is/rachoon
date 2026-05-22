@@ -5,6 +5,7 @@ export interface ClientData {
   info: {
     vat: string;
     addition: string;
+    reference: string;
   };
   address: {
     street: string;
@@ -38,7 +39,7 @@ class Client {
   updatedAt: Date = new Date();
   data: ClientData = {
     address: { street: "", zip: "", city: "", country: "" },
-    info: { vat: "", addition: "" },
+    info: { vat: "", addition: "", reference: "" },
     contactPerson: { fullName: "", email: "" },
     conditions: {
       earlyPayment: { days: null, discount: null },
