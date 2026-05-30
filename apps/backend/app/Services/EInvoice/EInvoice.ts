@@ -1,7 +1,7 @@
 import Organization from 'App/Models/Organization'
 import Document from 'App/Models/Document'
 import { Document as CommonDocument, Organization as CommonOrg, EInvoiceType } from '@repo/common'
-import EN16931 from './EInvoice/EN16931'
+import EN16931 from './EN16931'
 import { PDFDocument } from 'pdf-lib'
 
 export default class EInvoice {

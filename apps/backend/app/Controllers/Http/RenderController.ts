@@ -2,7 +2,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { DocumentType } from '@repo/common'
 import Template from 'App/Models/Template'
 import Renderer from 'App/Services/Renderer'
-import EInvoice from 'App/Services/EInvoice'
+import EInvoice from 'App/Services/EInvoice/EInvoice'
 import RenderValidator from 'App/Validators/Render'
 
 export default class RenderController {
