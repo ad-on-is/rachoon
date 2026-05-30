@@ -15,7 +15,7 @@ export default class TemplatessController {
   private async generateThumbnail(ctx: HttpContextContract, template: Template): Promise<string> {
     const html = Renderer.prepareHtml(ctx.auth.user!, template, Example.get(DocumentType.Invoice))
     const res = await Renderer.generatePDFOrImage(html, true, 10)
-    return res[0]
+    return `data:image/png;base64,'${res[0].toString('base64')}`
   }
 
   public async index(ctx: HttpContextContract) {

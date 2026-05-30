@@ -8,7 +8,20 @@ export enum DocumentStatus {
   Pending = 1,
   Accepted = 2,
   Paid = 3,
-  Overdue = 4,
+}
+
+export enum EInvoiceType {
+  CII = "CII",
+  UBL = "UBL",
+  XRechnungCII = "XRECHNUNG-CII",
+  XRechnungUBL = "XRECHNUNG-UBL",
+  FacturXMinimum = "Factur-X-Minimum",
+  FacturXBasicWL = "Factur-X-Basic WL",
+  FacturXBasic = "Factur-X-Basic",
+  FacturXEN16931 = "Factur-X-EN16931",
+  FacturXExtended = "Factur-X-Extended",
+  FacturXXRechnung = "Factur-X-XRechnung",
+  PeppolBis = "PEPPOL-BIS",
 }
 
 export enum DocumentType {
@@ -72,9 +85,10 @@ export interface Position {
 }
 
 export interface TaxOption {
-  title: String;
+  title: string;
   applicable: boolean;
   default: boolean;
+  code?: string;
 }
 
 export interface TaxRate {
@@ -94,6 +108,7 @@ export interface DiscountCharge {
 export interface DocumentData {
   title: string;
   positions: Position[];
+  eInvoiceType: EInvoiceType | "";
   discountsCharges: DiscountCharge[];
   taxes: { [rate: string]: number };
   headingText: string;
@@ -101,6 +116,7 @@ export interface DocumentData {
   date: Date;
   dueDate: Date;
   dueDays: number;
+  deliveryDate: Date | null;
   total: number;
   net: number;
   netNoDiscount: number;
@@ -125,11 +141,13 @@ class Document {
   recurringInvoice: Recurring | null = null;
   data = {
     title: "",
+    eInvoiceType: "" as EInvoiceType,
     positions: [] as Position[],
     discountsCharges: [] as DiscountCharge[],
-    taxes: {},
+    taxes: {} as { [rate: string]: number },
     date: new Date(),
     dueDate: new Date(),
+    deliveryDate: new Date(),
     headingText: "",
     footerText: "",
     total: 0,
@@ -146,8 +164,10 @@ class Document {
 
   constructor(json?: any) {
     if (json) {
+      if (!json.data) {
+        return;
+      }
       Helpers.merge(this, json);
-
       this.data.positions.map((p) => (p.focused = false));
       if (json.offer) {
         this.offer = new Document(json.offer);
@@ -272,11 +292,7 @@ class Document {
       if (p.discount > 0) {
         p.net -= (p.net / 100) * p.discount;
       }
-      if (this.data.taxOption?.applicable) {
-        p.taxPrice = (p.net / 100) * p.tax;
-      } else {
-        p.taxPrice = 0;
-      }
+      p.taxPrice = (p.net / 100) * p.tax;
       p.total = p.net + p.taxPrice;
       if (sumPositions === 0 || p.net === 0) {
         p.totalPercentage = 0;
@@ -305,17 +321,42 @@ class Document {
 
     this.data.positions.map((p) => {
       p.net += (sumDiscountsCharges / 100) * p.totalPercentage;
-      if (this.data.taxOption?.applicable) {
-        p.taxPrice = (p.net / 100) * p.tax;
-      } else {
-        p.taxPrice = 0;
-      }
-      p.total = p.net + p.taxPrice;
+      p.taxPrice = (p.net / 100) * p.tax;
+      const pTax = this.data.taxOption?.applicable ? p.taxPrice : 0;
+      p.total = p.net + pTax;
     });
   };
 
   setStatus(status: DocumentStatus) {
     this.status = status;
+  }
+
+  totalTaxes(): number {
+    let total = 0;
+    Object.entries(this.data.taxes).forEach(([_, value]) => {
+      total += value as number;
+    });
+    return total;
+  }
+
+  totalCharges(): number {
+    let total = 0;
+    this.data.discountsCharges.forEach((dc) => {
+      if (dc.type === DCType.Charge) {
+        total += dc.amount;
+      }
+    });
+    return total;
+  }
+
+  totalDiscounts(): number {
+    let total = 0;
+    this.data.discountsCharges.forEach((dc) => {
+      if (dc.type === DCType.Discount) {
+        total += dc.amount;
+      }
+    });
+    return total;
   }
 
   calcTotal() {
@@ -334,18 +375,26 @@ class Document {
     this.data.net = this.data.positions.reduce((p, c) => (p += c.net), 0);
   }
 
+  totalTaxBasis(rate: number): number {
+    let total = 0;
+    this.data.positions.forEach((p) => {
+      if (p.tax === rate) {
+        total += p.net;
+      }
+    });
+    return total;
+  }
+
   calcTaxes() {
     this.data.taxes = {};
-    if (this.data.taxOption?.applicable) {
-      const rates: { [_: number]: number } = {};
-      this.data.positions.forEach((p) => {
-        if (!rates[p.tax]) {
-          rates[p.tax] = 0;
-        }
-        rates[p.tax]! += p.taxPrice;
-      });
-      this.data.taxes = rates;
-    }
+    const rates: { [_: number]: number } = {};
+    this.data.positions.forEach((p) => {
+      if (!rates[p.tax]) {
+        rates[p.tax] = 0;
+      }
+      rates[p.tax]! += p.taxPrice;
+    });
+    this.data.taxes = rates;
   }
 
   addPosition(

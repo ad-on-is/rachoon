@@ -1,16 +1,38 @@
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
-import { column, beforeSave, belongsTo, BelongsTo, computed } from '@ioc:Adonis/Lucid/Orm'
+import {
+  column,
+  beforeSave,
+  belongsTo,
+  BelongsTo,
+  computed,
+  afterFind,
+  afterFetch,
+} from '@ioc:Adonis/Lucid/Orm'
 import Organization from './Organization'
 import HashIDs from 'App/Helpers/hashids'
 import BaseAppModel from './BaseAppModel'
-import { UserRole } from '@repo/common'
+import { UserRole, Helpers, User as Common } from '@repo/common'
 
 export default class User extends BaseAppModel {
   public serializeExtras() {
     return {
       minutes: Number(this.$extras.minutes || 0),
     }
+  }
+
+  @afterFind()
+  public static hydrate(model: User) {
+    const common = new Common(model.toJSON())
+    model.data = Helpers.merge(common.data, model.data)
+  }
+
+  @afterFetch()
+  public static hydrateAll(models: User[]) {
+    models.map((model) => {
+      const common = new Common(model.toJSON())
+      model.data = Helpers.merge(common.data, model.data)
+    })
   }
 
   public static searchFields = ['email', 'data.fullName', 'data.username']

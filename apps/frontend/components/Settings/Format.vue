@@ -7,7 +7,7 @@ const entity = useSettings().settings[props.entity];
 </script>
 
 <template>
-  <div class="grid grid-cols-2 gap-5">
+  <div class="grid grid-cols-2 gap-y-4">
     <div>
       <label class="label w-full max-w-xs">
         <span class="label-text">Format</span>

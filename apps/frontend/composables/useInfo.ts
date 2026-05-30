@@ -12,7 +12,7 @@ class InfoStore {
     }
     const apiInfo = await useApi().info().get();
     this.info.value = { ...this.info.value, ...apiInfo };
-    console.log(this.info.value);
+    console.log(`INFO: ${JSON.stringify(this.info.value)}`);
     this.loading.value = false;
   };
 }

@@ -6,3 +6,6 @@ export * from "./Format";
 export * from "./Helpers";
 export * from "./Locale";
 export * from "./User";
+export * from "./Settings";
+export * from "./Organization";
+export * from "./Template";

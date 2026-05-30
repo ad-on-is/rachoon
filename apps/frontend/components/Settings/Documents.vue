@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import { EInvoiceType } from "@repo/common";
+const eInvoiceTypes = Object.values(EInvoiceType);
+</script>
 <template>
   <FormSection title="Invoice" description="Configure your invoice settings.">
     <div class="grid grid-cols-2">
@@ -30,12 +34,21 @@
           <span class="text-sm text-info">days</span>
         </label>
       </div>
+
+      <div>
+        <label class="label">Default E-Invoice Type</label>
+        <select class="select select-bordered select-sm bg-base-300 max-w-56" v-model="useSettings().settings.invoices.eInvoiceType">
+          <option v-for="t in eInvoiceTypes" :value="t" :key="t">
+            {{ t }}
+          </option>
+        </select>
+      </div>
     </div>
 
     <SettingsFormat entity="invoices" />
   </FormSection>
 
-  <FormSection title="Offers" description="Confiigure your offer settings.">
+  <FormSection title="Offers" description="Configure your offer settings.">
     <div class="grid grid-cols-2">
       <div>
         <label class="label w-full max-w-xs">
@@ -70,7 +83,7 @@
     <SettingsFormat entity="offers" />
   </FormSection>
 
-  <FormSection title="Reminders" description="Confiigure your reminder settings.">
+  <FormSection title="Reminders" description="Configure your reminder settings.">
     <div class="grid grid-cols-2">
       <div>
         <label class="label w-full max-w-xs">

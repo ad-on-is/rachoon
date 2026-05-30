@@ -119,11 +119,79 @@
               class="select select-bordered select-sm bg-base-300 w-full max-w-xs"
               v-model="useProfile().me.organization.data.address.country"
             >
-              <option v-for="c in useCountries.countries" :value="c.country">
+              <option v-for="c in useCountries.countries" :value="c.abbreviation">
                 {{ c.country }}
               </option>
             </select>
           </div>
+        </div>
+      </div>
+    </FormSection>
+    <FormSection title="Primary Contact" description="Provide main contact person and email address.">
+      <div class="grid grid-cols-2 gap-5">
+        <div>
+          <label class="label w-full max-w-xs">
+            <span class="label-text">
+              Full name
+              <span class="text-red-700">*</span>
+            </span>
+          </label>
+          <input
+            type="text"
+            placeholder="Full name"
+            v-model="useProfile().me.organization.data.contactPerson.fullName"
+            required
+            class="input input-bordered input-sm w-full max-w-xs"
+          />
+        </div>
+        <div>
+          <label class="label w-full max-w-xs">
+            <span class="label-text">
+              E-mail
+              <span class="text-red-700">*</span>
+            </span>
+          </label>
+          <input
+            type="email"
+            pattern=".+@.+\..+"
+            required
+            placeholder="mail@example.com"
+            v-model="useProfile().me.organization.data.contactPerson.email"
+            class="input input-bordered input-sm w-full max-w-xs"
+          />
+        </div>
+      </div>
+    </FormSection>
+    <FormSection title="Payment details" description="Payment details for your invoices">
+      <div class="grid grid-cols-1 xl:grid-cols-2 gap-5">
+        <div class="">
+          <label class="label w-full max-w-xs">
+            <span class="label-text">Account holder</span>
+          </label>
+          <input
+            type="text"
+            v-model="useProfile().me.organization.data.payment.accountHolder"
+            placeholder="Account holder"
+            class="input input-bordered input-sm w-full max-w-xs"
+          />
+          <label class="label w-full max-w-xs">
+            <span class="label-text">IBAN</span>
+          </label>
+          <input
+            type="text"
+            v-model="useProfile().me.organization.data.payment.iban"
+            placeholder="XX00 0000 0000 0000 0000 00"
+            class="input input-bordered input-sm w-full max-w-xs"
+          />
+          <label class="label w-full max-w-xs">
+            <span class="label-text">SWIFT/BIC</span>
+          </label>
+          <input
+            type="text"
+            placeholder="AABBXY123"
+            v-model="useProfile().me.organization.data.payment.bic"
+            class="input input-bordered input-sm w-full max-w-xs"
+          />
         </div>
       </div>
     </FormSection>

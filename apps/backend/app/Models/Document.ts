@@ -6,6 +6,7 @@ import {
   DocumentType,
 } from '@repo/common'
 import { isPast } from 'date-fns'
+import { Helpers, Document as Common } from '@repo/common'
 import {
   beforeSave,
   BelongsTo,
@@ -16,6 +17,8 @@ import {
   hasMany,
   hasOne,
   HasOne,
+  afterFind,
+  afterFetch,
 } from '@ioc:Adonis/Lucid/Orm'
 import Client from './Client'
 import Organization from './Organization'
@@ -31,6 +34,20 @@ export default class Document extends BaseAppModel {
     }
   }
 
+  @afterFind()
+  public static hydrate(model: Document) {
+    const common = new Common(model.toJSON())
+    model.data = Helpers.merge(common.data, model.data)
+  }
+
+  @afterFetch()
+  public static hydrateAll(models: Document[]) {
+    models.map((model) => {
+      const common = new Common(model.toJSON())
+      model.data = Helpers.merge(common.data, model.data)
+    })
+  }
+
   public totalReminders: number
   public static searchFields = ['number', 'data.dueDate', 'data.net', 'data.total']
   public static sortFields = ['number', 'status', 'data.dueDate', 'data.net', 'data.total']
@@ -38,11 +55,11 @@ export default class Document extends BaseAppModel {
 
   @computed()
   public get overdue() {
-    return (
-      this.status !== DocumentStatus.Paid &&
-      this.status !== DocumentStatus.Draft &&
-      isPast(this.data.dueDate)
-    )
+    if (!this.data) {
+      return false
+    }
+
+    return this.status === DocumentStatus.Pending && isPast(this.data.dueDate)
   }
 
   @computed()
@@ -74,7 +91,7 @@ export default class Document extends BaseAppModel {
   public type: DocumentType
 
   @column()
-  public data: any
+  public data: DocumentData
 
   @column()
   public recurring: boolean

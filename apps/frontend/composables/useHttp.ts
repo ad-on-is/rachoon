@@ -46,7 +46,7 @@ export default class HttpClient {
         useToast("Error", JSON.stringify(res._data) || "Unexpected error", "error");
       }
 
-      return { body: camelcaseKeys(res._data as any, { deep: true }), headers: res.headers };
+      return { body: res._data as any, headers: res.headers };
     } catch (e) {
       if (e.message.includes("401 Unauthorized")) {
         useAuth().logout();

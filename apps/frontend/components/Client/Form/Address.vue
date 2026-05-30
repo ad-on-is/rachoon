@@ -57,7 +57,7 @@ const controller = () => useClient();
           </span>
         </label>
         <select class="select select-bordered select-sm bg-base-300 w-full max-w-xs" v-model="controller().item.data.address.country">
-          <option v-for="c in useCountries.countries" :value="c.country">
+          <option v-for="c in useCountries.countries" :value="c.abbreviation">
             {{ c.country }}
           </option>
         </select>

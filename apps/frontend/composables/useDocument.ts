@@ -158,7 +158,7 @@ class DocumentStore extends Base<Document> {
     });
 
     this.item.value.data.dueDate = DateTime.fromJSDate(this.item.value.data.dueDate)
-      .plus({ days: useProfile().me.organization.settings[this.type()].dueDays })
+      .plus({ days: useSettings().settings[this.type()].dueDays })
       .toJSDate();
 
     this.item.value.data.taxOption = useSettings().settings.taxes.options.filter((o) => o.default)[0];

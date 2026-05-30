@@ -1,5 +1,7 @@
 import useApi from "./useApi";
 
+import { type TaxOption } from "@repo/common";
+
 class SettingsStore {
   settings = useProfile().me.organization.settings;
   organizationData = useProfile().me.organization.data;

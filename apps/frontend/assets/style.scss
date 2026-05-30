@@ -136,6 +136,13 @@ table.datatable tr {
   }
 }
 
+table.document-line tr {
+  @apply bg-base-300 bg-opacity-0 transition-all duration-500;
+  &:hover {
+    @apply bg-opacity-60 duration-100;
+  }
+}
+
 .logo h2 {
   font-weight: 800;
   font-size: 24px;

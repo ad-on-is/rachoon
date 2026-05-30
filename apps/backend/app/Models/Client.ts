@@ -1,10 +1,18 @@
 import { DateTime } from 'luxon'
-import { column, belongsTo, BelongsTo, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
+import {
+  column,
+  belongsTo,
+  BelongsTo,
+  hasMany,
+  HasMany,
+  afterFetch,
+  afterFind,
+} from '@ioc:Adonis/Lucid/Orm'
 import Organization from './Organization'
 import HashIDs from 'App/Helpers/hashids'
 import Document from './Document'
 import BaseAppModel from './BaseAppModel'
-import { DocumentType } from '@repo/common'
+import { DocumentType, Helpers, Client as Common } from '@repo/common'
 
 export default class Client extends BaseAppModel {
   public static searchFields = ['name', 'number']
@@ -19,6 +27,21 @@ export default class Client extends BaseAppModel {
       totalReminders: Number(this.$extras.totalReminders || 0),
     }
   }
+
+  @afterFind()
+  public static hydrate(model: Client) {
+    const common = new Common(model.toJSON())
+    model.data = Helpers.merge(common.data, model.data)
+  }
+
+  @afterFetch()
+  public static hydrateAll(models: Client[]) {
+    models.map((model) => {
+      const common = new Common(model.toJSON())
+      model.data = Helpers.merge(common.data, model.data)
+    })
+  }
+
   public totalInvoices: number
   public totalOrders: number
   public totalReminders: number

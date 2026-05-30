@@ -1,14 +1,32 @@
 import { DateTime } from 'luxon'
-import { column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
+import { column, hasMany, HasMany, afterFetch, afterFind } from '@ioc:Adonis/Lucid/Orm'
 import Document from './Document'
 import Client from './Client'
 import User from './User'
 import HashIDs from 'App/Helpers/hashids'
 import BaseAppModel from './BaseAppModel'
+import { Helpers, OrganizationData, Settings, Organization as Common } from '@repo/common'
+import _ from 'lodash'
 
 export default class Organization extends BaseAppModel {
   @column({ isPrimary: true, serialize: (val) => HashIDs.encode(val) })
   public id: number
+
+  @afterFind()
+  public static hydrate(model: Organization) {
+    const common = new Common(model.toJSON())
+    model.data = Helpers.merge(common.data, model.data)
+    model.settings = Helpers.merge(common.settings, model.settings)
+  }
+
+  @afterFetch()
+  public static hydrateAll(models: Organization[]) {
+    models.map((model) => {
+      const common = new Common(model.toJSON())
+      model.data = Helpers.merge(common.data, model.data)
+      model.settings = Helpers.merge(common.settings, model.settings)
+    })
+  }
 
   @column()
   public name: string
@@ -17,10 +35,10 @@ export default class Organization extends BaseAppModel {
   public slug: string
 
   @column()
-  public data: any
+  public data: OrganizationData
 
   @column()
-  public settings: any
+  public settings: Settings
 
   @hasMany(() => Document)
   public documents: HasMany<typeof Document>

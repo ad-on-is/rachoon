@@ -3,6 +3,7 @@ import { compose } from '@ioc:Adonis/Core/Helpers'
 import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { Exception } from '@adonisjs/core/build/standalone'
+import camelcaseKeys from 'camelcase-keys'
 
 export default class BaseAppModel extends compose(BaseModel, SoftDeletes) {
   public page = 1
@@ -11,6 +12,10 @@ export default class BaseAppModel extends compose(BaseModel, SoftDeletes) {
   public static searchFields: string[] = []
   public static sortFields: string[] = []
   public static filterFields: string[] = []
+
+  public toJSON() {
+    return camelcaseKeys(super.toJSON(), { deep: true })
+  }
 
   private static operators = ['=', '!=', '<', '<=', '>', '>=', 'like', 'in', 'not in']
 

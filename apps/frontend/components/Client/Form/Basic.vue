@@ -41,6 +41,17 @@ const controller = () => useClient();
           class="input input-bordered input-sm w-full max-w-xs"
         />
       </div>
+      <div>
+        <label class="label w-full max-w-xs">
+          <span class="label-text">Reference</span>
+        </label>
+        <input
+          type="text"
+          placeholder="12-ABCDEF-34"
+          v-model="controller().item.data.info.reference"
+          class="input input-bordered input-sm w-full max-w-xs"
+        />
+      </div>
     </div>
   </div>
 </template>
