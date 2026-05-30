@@ -1,4 +1,4 @@
-import { Document, Organization } from '@repo/common'
+import { Document, Organization, EInvoiceType } from '@repo/common'
 import { InvoiceService, InvoiceServiceOptions, Invoice } from '@e-invoice-eu/core'
 
 function formatDateISO(date: Date): string {
@@ -116,18 +116,21 @@ export default class EN16931 {
       },
     }))
 
+    const isPeppol = format === EInvoiceType.PeppolBis
+
     const inv: Invoice = {
       'ubl:Invoice': {
-        'cbc:CustomizationID': 'urn:cen.eu:en16931:2017#compliant#urn:factur-x.eu:1p0:basic',
+        'cbc:CustomizationID': isPeppol
+          ? 'urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0'
+          : 'urn:cen.eu:en16931:2017#compliant#urn:factur-x.eu:1p0:basic',
+        ...(isPeppol ? { 'cbc:ProfileID': 'urn:fdc:peppol.eu:2017:poacc:billing:01:1.0' } : {}),
         'cbc:ID': doc.number,
         'cbc:IssueDate': formatDateISO(doc.data.date),
         'cbc:DueDate': formatDateISO(doc.data.dueDate),
         'cbc:InvoiceTypeCode': '380',
         'cbc:Note': [`Payment due within ${doc.data.dueDays} days.`],
         'cbc:DocumentCurrencyCode': currency,
-        ...(doc.client!.data.info.reference
-          ? { 'cbc:BuyerReference': doc.client!.data.info.reference }
-          : {}),
+        'cbc:BuyerReference': doc.client!.data.info.reference || 'NA',
         'cac:AccountingSupplierParty': {
           'cac:Party': {
             'cbc:EndpointID': sellerElectronicAddress,
@@ -248,7 +251,7 @@ export default class EN16931 {
 
     const invoiceService = new InvoiceService(console)
     const opts = {
-      format,
+      format: isPeppol ? 'UBL' : format,
       lang: 'en',
       ...(pdf
         ? {

@@ -21,6 +21,7 @@ export enum EInvoiceType {
   FacturXEN16931 = "Factur-X-EN16931",
   FacturXExtended = "Factur-X-Extended",
   FacturXXRechnung = "Factur-X-XRechnung",
+  PeppolBis = "PEPPOL-BIS",
 }
 
 export enum DocumentType {
