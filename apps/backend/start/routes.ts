@@ -40,6 +40,7 @@ Route.group(() => {
     Route.resource('number/:type', 'NumbersController').only(['index'])
     Route.resource('documents/status', 'DocumentsStatusController').only(['update'])
     Route.resource('documents', 'DocumentsController').apiOnly()
+    Route.get('clients/autocomplete', 'ClientsController.autocomplete')
     Route.resource('clients', 'ClientsController').apiOnly()
     Route.get('templates/default', 'TemplatesController.default')
     Route.get('templates/duplicate/:id', 'TemplatesController.duplicate')

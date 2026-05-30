@@ -51,6 +51,8 @@ export default function useApi() {
             `${endpoint}?page=${page}&perPage=${perPage}${parseSort(sort)}&${parseFilter(filter)}&q=${search}`,
             Client,
           ),
+        getForAutoComplete: async (q: string = ""): Promise<Client[]> =>
+          (await useHttp.get(`${endpoint}/autocomplete?q=${q}`)).body.map((d: any) => new Client(d)),
         count: async (): Promise<number> => Number((await useHttp.get(`${endpoint}/?count=true`)).body!),
         delete: async (id: string) => (await useHttp.del(`${endpoint}/${id}`)).body,
         saveOrUpdate: async (client: Client, update: boolean = false) => {

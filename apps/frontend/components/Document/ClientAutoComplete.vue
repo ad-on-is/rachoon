@@ -10,7 +10,14 @@ const val = ref("");
     :items="useDocument().clients"
     :minInputLength="1"
     :value="val"
-    @onInput="(i) => (val = i.input)"
+    @onInput="
+      (i) => {
+        val = i.input;
+        if (i.items.length === 0) {
+          useDocument().searchClient(i.input);
+        }
+      }
+    "
     @selectItem="
       (i: Client) => {
         val = `${i.name} (${i.number})`;

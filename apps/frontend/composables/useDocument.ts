@@ -31,6 +31,11 @@ class DocumentStore extends Base<Document> {
     this.item.value.templateId = id;
   };
 
+  searchClient = async (query: string) => {
+    const clients = await useApi().clients().getForAutoComplete(query);
+    this.clients.value = [...this.clients.value, ...clients];
+  };
+
   setClient = (client: Client) => {
     this.item.value.clientId = client.id;
     this.item.value.client = client;
@@ -147,7 +152,7 @@ class DocumentStore extends Base<Document> {
 
   handleNew = async () => {
     new Promise(async (r) => {
-      this.clients.value = (await useApi().clients().getAll()).rows;
+      this.clients.value = await useApi().clients().getForAutoComplete();
       r(true);
     });
 

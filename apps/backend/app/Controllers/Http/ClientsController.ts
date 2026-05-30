@@ -3,6 +3,7 @@ import ClientValidator from 'App/Validators/Client'
 import Client from '../../Models/Client'
 import Numberervice from 'App/Services/Number'
 import { DocumentStatus } from '@repo/common'
+import Document from 'App/Models/Document'
 
 export default class ClientsController {
   public async index(ctx: HttpContextContract) {
@@ -58,6 +59,21 @@ export default class ClientsController {
         })
         .firstOrFail()
     ).delete()
+  }
+
+  public async autocomplete(ctx: HttpContextContract) {
+    if (ctx.request.qs()['q']) {
+      return await Client.query().withScopes((scopes) => scopes.searchBy(ctx, Client))
+    }
+    const docs = await Document.query()
+      .where({ organizationId: ctx.auth.user?.organizationId })
+      .select('clientId')
+      .max('created_at as maxCreatedAt')
+      .groupBy('clientId')
+      .orderByRaw('max(created_at) desc')
+      .limit(2)
+    const ids = docs.map((d) => d.clientId)
+    return await Client.query().whereIn('id', ids)
   }
 
   public async update(ctx: HttpContextContract) {
