@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TypeAhead from "vue3-simple-typeahead";
-import type { Template } from "~/models/template";
+import type { Template } from "@repo/common";
 const val = ref("");
 defineProps({
   placeholder: { type: String, default: "Type for autocomplete ..." },

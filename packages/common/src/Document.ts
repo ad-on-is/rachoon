@@ -177,6 +177,9 @@ class Document {
       this.invoices = (json.invoices || []).map((i: any) => new Document(i));
       this.data.date = new Date(Date.parse(json.data.date.toString()));
       this.data.dueDate = new Date(Date.parse(json.data.dueDate.toString()));
+      this.data.deliveryDate = new Date(
+        Date.parse(json.data.deliveryDate.toString()),
+      );
       if (json.updatedAt && json.createdAt) {
         this.updatedAt = new Date(Date.parse(json.updatedAt.toString()));
         this.createdAt = new Date(Date.parse(json.createdAt.toString()));
