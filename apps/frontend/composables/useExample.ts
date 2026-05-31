@@ -10,11 +10,14 @@ export default defineStore("example", () => {
     offer.number = Format.number(useSettings().settings.offers.number, 0);
     reminder.number = Format.number(useSettings().settings.reminders.number, 0);
 
+    invoice.templateId = templateId;
+    offer.templateId = templateId;
+    reminder.templateId = templateId;
 
     const [invoicePreview, offerPreview, reminderPreview] = await Promise.all([
-      useRender(invoice, true, templateId),
-      useRender(offer, true, templateId),
-      useRender(reminder, true, templateId),
+      useApi().render(invoice, true),
+      useApi().render(offer, true),
+      useApi().render(reminder, true),
     ]);
 
     return [...invoicePreview, ...offerPreview, ...reminderPreview];

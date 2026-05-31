@@ -13,7 +13,7 @@ useDashboard().get();
     <div v-else class="mx-5 mt-5">
       <div class="prose mb-5 mx-5">
         <h2 class="">
-          <label for="app-drawer" class="btn btn-ghost btn-sm lg:hidden"><FaIcon icon="fa-icon fa-bars" /></label>
+          <label for="app-drawer" class="btn btn-ghost btn-sm lg:hidden"><FaIcon icon="fa-bars" /></label>
 
           Statistics
         </h2>

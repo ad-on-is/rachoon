@@ -3,8 +3,6 @@ import _ from "lodash";
 import Base from "./_base";
 
 class TemplateStore extends Base<Template> {
-  defaultTemplate = ref(new Template());
-
   save = async (e: Event) => {
     super.save(e);
     const c = await useApi().templates().saveOrUpdate(this.item.value!, !this.isNew());
@@ -15,11 +13,9 @@ class TemplateStore extends Base<Template> {
 
   get = async (id: string): Promise<Template> => {
     this.loading.value = true;
-
-    const t = id === "default" ? await useApi().templates().getDefault() : await useApi().templates().get(id);
-    const tpl = _.mergeWith(new Template(), t);
+    const t = await useApi().templates().get(id);
     this.loading.value = false;
-    return tpl;
+    return t;
   };
 
   delete = async (id?: string) => {
@@ -30,7 +26,7 @@ class TemplateStore extends Base<Template> {
       if (id) {
         this.items.value = this.items.value.filter((i) => i.id !== (id || this.item.value.id));
       } else {
-        useRouter().replace(`/${this.type()}/`);
+        useRouter().replace(`/templates/`);
       }
     }, `Are you sure you want to delete the template ${this.item.value.title}?`);
   };
@@ -39,12 +35,6 @@ class TemplateStore extends Base<Template> {
     this.loading.value = true;
     const duplicate = await useApi().templates().duplicate(id);
     useRouter().push(`/templates/${duplicate.id}`);
-    this.loading.value = false;
-  };
-
-  getDefault = async () => {
-    this.loading.value = true;
-    this.defaultTemplate.value = await useApi().templates().getDefault();
     this.loading.value = false;
   };
 

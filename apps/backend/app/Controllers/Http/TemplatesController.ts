@@ -15,7 +15,7 @@ export default class TemplatessController {
   private async generateThumbnail(ctx: HttpContextContract, template: Template): Promise<string> {
     const html = Renderer.prepareHtml(ctx.auth.user!, template, Example.get(DocumentType.Invoice))
     const res = await Renderer.generatePDFOrImage(html, true, 10)
-    return `data:image/png;base64,'${res[0].toString('base64')}`
+    return `data:image/png;base64,${res[0].toString('base64')}`
   }
 
   public async index(ctx: HttpContextContract) {
@@ -79,24 +79,6 @@ export default class TemplatessController {
       .where({ id: ctx.request.param('id'), organizationId: ctx.auth.user?.organizationId })
       .orWhere({ id: ctx.request.param('id'), organizationId: null })
       .firstOrFail()
-  }
-
-  public async default(ctx: HttpContextContract) {
-    let defaultTemplate = await Template.query()
-      .where({
-        organizationId: ctx.auth.user?.organizationId,
-        default: true,
-      })
-      .firstOrFail()
-
-    if (!defaultTemplate) {
-      defaultTemplate = await Template.query()
-        .where({ organizationId: null, default: true })
-        .debug(true)
-        .firstOrFail()
-    }
-
-    return defaultTemplate
   }
 
   public async duplicate(ctx: HttpContextContract) {

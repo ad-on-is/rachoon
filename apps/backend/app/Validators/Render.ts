@@ -5,7 +5,7 @@ export default class RenderValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   public schema = schema.create({
-    templateId: schema.number(),
+    templateId: schema.number.optional(),
     data: schema.object().anyMembers(),
   })
 

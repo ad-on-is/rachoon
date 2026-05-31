@@ -243,18 +243,13 @@ export default function useApi() {
         get: async (): Promise<any> => (await useHttp.get("/api/info")).body,
       };
     },
-    render: async (html: string, preview: boolean = false): Promise<string[] | string> => {
-      const res = (await useHttp.post(
-        `/api/render${preview ? "?preview=true" : ""}`,
-        {
-          html: html,
-        },
-        true,
-      )) as string[];
-
-      if (preview) return res;
-
-      return res[0];
+    render: async (object: any, preview: boolean = false): Promise<string[] | string> => {
+      return (
+        await useHttp.post(`/api/render${preview ? "?preview=true" : ""}`, {
+          templateId: object.templateId || "",
+          data: object,
+        })
+      ).body;
     },
   };
 }

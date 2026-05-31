@@ -114,12 +114,12 @@ class DocumentStore extends Base<Document> {
   };
 
   preview = async () => {
-    return (await useRender(this.item.value, true)) as string[];
+    return (await useApi().render(this.item.value, true)) as string[];
   };
 
   download = async (io?: Document) => {
     const dio = io || this.item.value;
-    const data = (await useRender(dio)) as string;
+    const data = (await useApi().render(dio)) as string;
     let a = document.createElement("a");
     a.href = data;
     a.download = dio!.number + ".pdf";
@@ -215,7 +215,6 @@ class DocumentStore extends Base<Document> {
     this.loading.value = true;
     this.canBeDraft.value = false;
     new Promise(async (r) => {
-      useTemplate().getDefault();
       this.templates.value = (await useApi().templates().getAll()).rows;
       r(true);
     });

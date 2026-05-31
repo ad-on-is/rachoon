@@ -77,20 +77,57 @@ class Example {
         unit: "hrs",
       },
     ];
-    document.data.taxOption = {
-      title: "Apply taxes",
-      applicable: true,
-      default: true,
-    };
-    document.data.discountsCharges = [
-      {
-        title: "Some discount",
-        value: 5,
-        type: DCType.Discount,
-        valueType: ValueType.Percent,
-        amount: 10,
-      },
-    ];
+    if (type === DocumentType.Invoice || type === DocumentType.Offer) {
+      document.data.taxOption = {
+        title: "Apply taxes",
+        applicable: true,
+        default: true,
+      };
+    }
+    if (type === DocumentType.Offer) {
+      document.data.discountsCharges = [
+        {
+          title: "Some discount",
+          value: 5,
+          type: DCType.Discount,
+          valueType: ValueType.Percent,
+          amount: 10,
+        },
+      ];
+    }
+
+    if (type === DocumentType.Reminder) {
+      document.data.discountsCharges = [
+        {
+          title: "Reminder Fee",
+          value: 5,
+          type: DCType.Charge,
+          valueType: ValueType.Fixed,
+          amount: 10,
+        },
+      ];
+    }
+
+    if (type === DocumentType.Reminder) {
+      document.data.positions = [
+        {
+          id: Date.now(),
+          taxPrice: 0,
+          discount: 0,
+          net: 0,
+          netNoDiscount: 0,
+          total: 0,
+          totalPercentage: 0,
+          focused: false,
+          title: "INV-001-2001",
+          text: "",
+          quantity: 10,
+          price: 10000,
+          tax: 20,
+          unit: "unit",
+        },
+      ];
+    }
 
     document.calculate();
 
