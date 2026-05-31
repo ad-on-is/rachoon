@@ -26,6 +26,11 @@
       "import": "./dist/Client.js",
       "require": "./dist/Client.cjs"
     },
+    "./Dashboard": {
+      "types": "./dist/Dashboard.d.ts",
+      "import": "./dist/Dashboard.js",
+      "require": "./dist/Dashboard.cjs"
+    },
     "./Document": {
       "types": "./dist/Document.d.ts",
       "import": "./dist/Document.js",

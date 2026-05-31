@@ -43,9 +43,11 @@ export default class ClientsController {
 
   public async store(ctx: HttpContextContract) {
     const body = await ctx.request.validate(ClientValidator)
-    body.number = await Numberervice.client(ctx.auth.user!.organizationId)
+    const [number, sequence] = await Numberervice.client(ctx.auth.user!.organizationId)
     return await Client.create({
       ...body,
+      number: number,
+      sequence: sequence,
       organizationId: ctx.auth.user?.organizationId,
     })
   }

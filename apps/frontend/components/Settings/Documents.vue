@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { EInvoiceType } from "@repo/common";
+import { DocumentStatus, EInvoiceType } from "@repo/common";
 const eInvoiceTypes = Object.values(EInvoiceType);
+const stati = [DocumentStatus.Draft, DocumentStatus.Pending];
 </script>
 <template>
   <FormSection title="Invoice" description="Configure your invoice settings.">
@@ -35,6 +36,14 @@ const eInvoiceTypes = Object.values(EInvoiceType);
         </label>
       </div>
 
+      <div>
+        <label class="label">Default Status</label>
+        <select class="select select-bordered select-sm bg-base-300 max-w-56" v-model="useSettings().settings.invoices.status">
+          <option v-for="t in stati" :value="t" :key="t">
+            {{ DocumentStatus[t] }}
+          </option>
+        </select>
+      </div>
       <div>
         <label class="label">Default E-Invoice Type</label>
         <select class="select select-bordered select-sm bg-base-300 max-w-56" v-model="useSettings().settings.invoices.eInvoiceType">
@@ -79,6 +88,14 @@ const eInvoiceTypes = Object.values(EInvoiceType);
           <span class="text-sm text-info">days</span>
         </label>
       </div>
+      <div>
+        <label class="label">Default Status</label>
+        <select class="select select-bordered select-sm bg-base-300 max-w-56" v-model="useSettings().settings.offers.status">
+          <option v-for="t in stati" :value="t" :key="t">
+            {{ DocumentStatus[t] }}
+          </option>
+        </select>
+      </div>
     </div>
     <SettingsFormat entity="offers" />
   </FormSection>
@@ -113,6 +130,14 @@ const eInvoiceTypes = Object.values(EInvoiceType);
           />
           <span class="text-sm text-info">days</span>
         </label>
+      </div>
+      <div>
+        <label class="label">Default Status</label>
+        <select class="select select-bordered select-sm bg-base-300 max-w-56" v-model="useSettings().settings.reminders.status">
+          <option v-for="t in stati" :value="t" :key="t">
+            {{ DocumentStatus[t] }}
+          </option>
+        </select>
       </div>
     </div>
     <SettingsFormat entity="reminders" />

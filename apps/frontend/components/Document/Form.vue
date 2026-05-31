@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import { DocumentStatus } from "@repo/common";
+
 const controller = () => useDocument();
+const isDraft = ref(false);
 controller().form();
 onMounted(() => {
+  isDraft.value = controller().item.status === DocumentStatus.Draft;
   watch(
     // fixes the problem where old,new values are the same
     [
@@ -30,6 +34,10 @@ const offerNumber = controller().isOfferToConvert() ? ` from ${controller().offe
 const convert = () => {
   controller().calculateOfferToInvoice();
 };
+
+watch(isDraft, () => {
+  controller().toggleDraft(isDraft.value);
+});
 </script>
 <template>
   <Loading v-if="controller().loading" />
@@ -41,6 +49,12 @@ const convert = () => {
       icon="fa-file-invoice-dollar"
     >
       <template #buttons>
+        <div v-if="controller().canBeDraft">
+          <label class="label gap-2">
+            <input type="checkbox" class="toggle toggle-xs toggle-info" v-model="isDraft" />
+            <span class="text-xs">DRAFT</span>
+          </label>
+        </div>
         <div
           class="tooltip tooltip-bottom"
           data-tip="Recurring settings"

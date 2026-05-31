@@ -37,6 +37,7 @@ class Example {
     const document = new Document();
     document.type = type;
     document.number = "2023-0001";
+    document.sequence = 1;
     document.client = this.client();
     document.data.date = new Date();
     document.data.dueDate = new Date(

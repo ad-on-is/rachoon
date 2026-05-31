@@ -4,6 +4,7 @@ import { DocumentValidator } from 'App/Validators/Document'
 import NumberService from 'App/Services/Number'
 import DocumentService from 'App/Services/Document'
 import RecurringInvoice from 'App/Models/RecurringInvoice'
+import { DocumentStatus } from '@repo/common'
 
 export default class DocumentsController {
   public async index(ctx: HttpContextContract) {
@@ -38,13 +39,22 @@ export default class DocumentsController {
 
   public async store(ctx: HttpContextContract) {
     const body = await ctx.request.validate(DocumentValidator)
-    body.number = await NumberService.document(
-      ctx.auth.user!.organizationId,
-      Number(ctx.request.qs()['type'])
-    )
+
+    let sequence: null | number = null
+
+    if (body.status !== DocumentStatus.Draft) {
+      let [getNumber, getSequence] = await NumberService.document(
+        ctx.auth.user!.organizationId,
+        Number(ctx.request.qs()['type'])
+      )
+      body.number = getNumber
+      sequence = getSequence
+    }
+
     const document = await Document.create({
       ...body,
       type: Number(ctx.request.qs()['type']),
+      sequence: sequence,
       organizationId: ctx.auth.user?.organizationId,
     })
 
@@ -64,7 +74,19 @@ export default class DocumentsController {
       .where({ id: ctx.request.param('id'), organizationId: ctx.auth.user?.organizationId })
       .firstOrFail()
     const body = await ctx.request.validate(DocumentValidator)
+
+    const currentStatus = d.status
+
     d.merge(body)
+
+    if (currentStatus === DocumentStatus.Draft && d.status === DocumentStatus.Pending) {
+      let [getNumber, getSequence] = await NumberService.document(
+        ctx.auth.user!.organizationId,
+        Number(d.type)
+      )
+      d.number = getNumber
+      d.sequence = getSequence
+    }
     await d.save()
     if (body.recurringInvoice) {
       const recurringInvoice = await RecurringInvoice.query()

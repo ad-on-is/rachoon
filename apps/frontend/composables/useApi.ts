@@ -1,9 +1,4 @@
-import { Dashboard } from "~~/models/dashboard";
-import { Client } from "~~/models/client";
-import { Document, DocumentStatus, DocumentType } from "~~/models/document";
-import { Organization } from "~~/models/organization";
-import { Token, User } from "~~/models/user";
-import { Template } from "~/models/template";
+import { Document, DocumentStatus, DocumentType, Client, Organization, Dashboard, Template, Token, User } from "@repo/common";
 import Paginator from "~/models/paginator";
 
 export type getAllFunc<T> = (page: number, perPage: number, sort?: any, filter?: any) => Promise<Paginator<T>>;
@@ -72,7 +67,7 @@ export default function useApi() {
 
     number: (type: string | DocumentType, endpoint: string = "/api/number") => {
       return {
-        get: async (): Promise<string> => (await useHttp.get(`${endpoint}/${type}`)).body,
+        get: async (): Promise<[string, number]> => (await useHttp.get(`${endpoint}/${type}`)).body,
       };
     },
 

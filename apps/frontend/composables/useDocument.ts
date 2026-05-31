@@ -1,6 +1,15 @@
-import { Client } from "~~/models/client";
-import { DCType, Document, DocumentStatus, DocumentType, Recurring, ValueType, type TaxOption, ConvertOption } from "~~/models/document";
-import { Helpers } from "@repo/common";
+import {
+  DCType,
+  Document,
+  DocumentStatus,
+  DocumentType,
+  Recurring,
+  ValueType,
+  type TaxOption,
+  ConvertOption,
+  Helpers,
+  Client,
+} from "@repo/common";
 import { DateTime } from "luxon";
 
 import _ from "lodash";
@@ -18,6 +27,7 @@ class DocumentStore extends Base<Document> {
   offerToInvoiceOption = ref(ConvertOption.Full);
   offerToInvoiceValue = ref(1);
   offerToInvoiceValueType = ref(ValueType.Percent);
+  canBeDraft = ref(false);
 
   parentList = this.list;
 
@@ -57,9 +67,21 @@ class DocumentStore extends Base<Document> {
     this.item.value.rebuild();
   };
 
+  toggleDraft = (draft: boolean) => {
+    if (draft) {
+      this.item.value.status = DocumentStatus.Draft;
+    } else {
+      this.item.value.status = DocumentStatus.Pending;
+    }
+    this.setNumberByStatus(this.item.value.status);
+  };
+
   setStatus = (d: Document) => {
     if (d.invoices.length > 0) {
       useToast("Cannot change status", "Offer is already invoiced.", "warning");
+      return;
+    }
+    if (d.status === DocumentStatus.Draft) {
       return;
     }
     const status =
@@ -82,11 +104,12 @@ class DocumentStore extends Base<Document> {
   };
 
   save = async () => {
-    // super.save();
-    const ioo = await useApi().documents(this.docType()).saveOrUpdate(this.item.value, !this.isNew());
-    if (this.isNew()) {
-      useRouter().replace(`/${this.type()}/${ioo.id}`);
-    }
+    try {
+      const ioo = await useApi().documents(this.docType()).saveOrUpdate(this.item.value, !this.isNew());
+      if (this.isNew()) {
+        useRouter().replace(`/${this.type()}/${ioo.id}`);
+      }
+    } catch (e) {}
     this.mustSave.value = 0;
   };
 
@@ -150,15 +173,29 @@ class DocumentStore extends Base<Document> {
     this.item.value.calculate();
   };
 
+  setNumberByStatus = async (status: DocumentStatus) => {
+    if (status === DocumentStatus.Pending) {
+      const [number, _] = await useApi().number(this.docType()).get();
+      this.item.value.number = number;
+    } else {
+      this.item.value.number = "DRAFT-" + Date.now();
+    }
+  };
+
   handleNew = async () => {
+    this.canBeDraft.value = true;
     new Promise(async (r) => {
       this.clients.value = await useApi().clients().getForAutoComplete();
       r(true);
     });
 
     this.recurring.value = new Recurring();
+
     new Promise(async (r) => {
-      this.item.value.number = await useApi().number(this.docType()).get();
+      const defaultStatus = useSettings().settings[this.type()].status;
+      this.item.value.status = defaultStatus;
+
+      await this.setNumberByStatus(defaultStatus);
       r(true);
     });
 
@@ -176,6 +213,7 @@ class DocumentStore extends Base<Document> {
 
   form = async () => {
     this.loading.value = true;
+    this.canBeDraft.value = false;
     new Promise(async (r) => {
       useTemplate().getDefault();
       this.templates.value = (await useApi().templates().getAll()).rows;
@@ -189,6 +227,9 @@ class DocumentStore extends Base<Document> {
       await this.handleNew();
     } else {
       this.item.value = Helpers.merge<Document>(this.item.value, await useApi().documents(this.docType()).get(id));
+      if (this.item.value.status === DocumentStatus.Draft) {
+        this.canBeDraft.value = true;
+      }
       if (this.item.value.recurringInvoice) {
         this.recurring.value = this.item.value.recurringInvoice;
       } else {

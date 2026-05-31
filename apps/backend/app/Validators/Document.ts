@@ -1,4 +1,5 @@
 import { schema, CustomMessages } from '@ioc:Adonis/Core/Validator'
+import { EInvoiceType } from '@repo/common'
 
 class DocumentValidator {
   public schema = schema.create({
@@ -23,7 +24,8 @@ class DocumentValidator {
       net: schema.number(),
       netNoDiscount: schema.number(),
       dueDays: schema.number(),
-      eInvoiceType: schema.string.optional(),
+      title: schema.string.optional(),
+      eInvoiceType: schema.enum.optional(Object.values(EInvoiceType)),
     }),
   })
 

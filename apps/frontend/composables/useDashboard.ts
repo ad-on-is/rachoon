@@ -1,4 +1,4 @@
-import { Dashboard } from "~~/models/dashboard";
+import { Dashboard } from "@repo/common";
 
 class DashboardStore {
   dashboard = ref(new Dashboard());

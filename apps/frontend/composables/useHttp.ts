@@ -1,4 +1,5 @@
 import camelcaseKeys from "camelcase-keys";
+import { isArray } from "lodash";
 
 type FetchMethod = "get" | "post" | "put" | "delete" | "patch" | "head" | "options";
 export default class HttpClient {
@@ -56,7 +57,9 @@ export default class HttpClient {
         this.notifyError(e);
       }
 
-      return {};
+      console.log(e);
+
+      throw e;
     }
   };
 
@@ -68,7 +71,11 @@ export default class HttpClient {
       if (e.data?.errors[0]?.message.includes("E_INVALID_AUTH_PASSWORD")) {
         message = "Email and password do not match";
       } else if (e.data?.errors[0]?.message) {
-        message = e.data.errors[0].message;
+        message = "";
+        e.data.errors.forEach((err: any) => {
+          message += `${JSON.stringify(err)}\n`;
+        });
+        // message = e.data.errors[0].message;
       } else if (typeof e.data === "string") {
         message = e.data;
       }

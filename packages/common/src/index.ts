@@ -1,5 +1,6 @@
 export * from "./Base";
 export * from "./Client";
+export * from "./Dashboard";
 export * from "./Document";
 export * from "./Example";
 export * from "./Format";

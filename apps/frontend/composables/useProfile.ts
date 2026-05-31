@@ -1,6 +1,5 @@
-import { Token, User } from "~~/models/user";
+import { Token, User, Helpers, type TaxOption } from "@repo/common";
 import _ from "lodash";
-import { Helpers, type TaxOption } from "@repo/common";
 
 class ProfileStore {
   me = ref<User>(new User());

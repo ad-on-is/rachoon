@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TypeAhead from "vue3-simple-typeahead";
-import { Client } from "~~/models/client";
+import { Client } from "@repo/common";
 const val = ref("");
 </script>
 <template>

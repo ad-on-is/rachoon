@@ -6,7 +6,6 @@ export default class ClientValidator {
 
   public schema = schema.create({
     name: schema.string(),
-    number: schema.string(),
     data: schema.object().members({
       address: schema.object().members({
         street: schema.string(),

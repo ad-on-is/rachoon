@@ -57,6 +57,9 @@ export default class Client extends BaseAppModel {
   public number: string
 
   @column()
+  public sequence: number | null
+
+  @column()
   public data: any
 
   @column({ serialize: (val) => HashIDs.encode(val) })

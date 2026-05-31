@@ -3,7 +3,7 @@
     :class="`header px-2 lg:px-5 py-3 flex gap-5 justify-between items-center prose ${$props.divider ? 'border-b border-base-300' : ''}`"
   >
     <h3 class="flex gap-3 items-center m-0 p-0">
-      <label for="app-drawer" class="btn btn-ghost btn-sm lg:hidden"><FaIcon icon="fa-icon fa-bars" /></label>
+      <label for="app-drawer" class="btn btn-ghost btn-sm lg:hidden"><FaIcon icon="fa-bars" /></label>
       <FaIcon :icon="`fa-solid ${$props.icon}`" />
       <span>{{ $props.title }}</span>
       <span class="text-xs mt-1 opacity-50">{{ $props.subtitle }}</span>

@@ -126,9 +126,10 @@ export interface DocumentData {
 class Document {
   id: string = "";
   clientId: null | string = null;
+  sequence: number | null = null;
   client: null | Client = null;
   number: string = "";
-  status: DocumentStatus = DocumentStatus.Pending;
+  status: DocumentStatus = DocumentStatus.Draft;
   offerId: null | string = null;
   templateId: null | string = null;
   invoiceId: null | string = null;

@@ -34,6 +34,7 @@ export interface ClientData {
 class Client {
   id: string = "";
   name: string = "";
+  sequence: number | null = null;
   number: string = "";
   createdAt: Date = new Date();
   updatedAt: Date = new Date();

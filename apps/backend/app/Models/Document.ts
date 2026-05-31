@@ -88,6 +88,9 @@ export default class Document extends BaseAppModel {
   public status: DocumentStatus
 
   @column()
+  public sequence: number | null
+
+  @column()
   public type: DocumentType
 
   @column()

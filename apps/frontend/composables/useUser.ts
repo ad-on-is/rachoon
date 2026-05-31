@@ -1,4 +1,4 @@
-import { User } from "~~/models/user";
+import { User } from "@repo/common";
 import _ from "lodash";
 import Base from "./_base";
 

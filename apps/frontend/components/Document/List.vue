@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Document, DocumentStatus, DocumentType } from "~~/models/document";
+import { Document, DocumentStatus, DocumentType } from "@repo/common";
 import * as cronstrue from "cronstrue";
 
 const props = defineProps({
@@ -24,7 +24,7 @@ controller().watchSearch();
 const icons = { offers: "fa-file-contract", invoices: "fa-file-invoice", reminders: "fa-file-lines" };
 
 const getStatusClass = (row: Document): string => {
-  if (row.overdue) return "error";
+  if (row.overdue && row.status === DocumentStatus.Pending) return "error";
   if (row.status === DocumentStatus.Accepted) return "info";
   if (row.status === DocumentStatus.Paid) return "success";
   if (row.invoices.length > 0) {
@@ -39,13 +39,21 @@ const getStatusIcon = (row: Document): string => {
   if (row.invoices.length > 0) {
     return "fa solid fa-check";
   }
-  return row.status == DocumentStatus.Pending ? "fa-regular fa-clock" : "fa-solid fa-check";
+  switch (row.status) {
+    case DocumentStatus.Pending:
+      return "fa-regular fa-clock";
+    case DocumentStatus.Draft:
+      return "fa-solid fa-pen-to-square";
+    default:
+      return "fa-solid fa-check";
+  }
 };
 
 const getStatusTooltip = (row: Document): string => {
-  if (row.overdue) return "Overdue";
+  if (row.overdue && row.status === DocumentStatus.Pending) return "Overdue";
   if (row.status === DocumentStatus.Accepted) return "Accepted";
   if (row.status === DocumentStatus.Paid) return "Paid";
+  if (row.status === DocumentStatus.Draft) return "Draft";
   if (row.invoices.length > 0) {
     const sum = row.invoices.reduce((p, c) => (p += c.data.net), 0);
     return sum >= row.data.net ? "Fully invoiced" : `${useFormat.toCurrency(sum)} invoiced`;

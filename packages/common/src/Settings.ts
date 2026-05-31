@@ -4,6 +4,7 @@ import {
   type TaxOption,
   type TaxRate,
   DCType,
+  DocumentStatus,
 } from "./Document";
 import _ from "lodash";
 
@@ -15,26 +16,32 @@ export interface SettingsData {
   units: { title: string; default: boolean }[];
   invoices: {
     title: string;
+    status: DocumentStatus;
     eInvoiceType: string;
     number: {
       format: string;
       padZeros: number;
+      start: number;
     };
     dueDays: number;
   };
   offers: {
     title: string;
+    status: DocumentStatus;
     number: {
       format: string;
       padZeros: number;
+      start: number;
     };
     dueDays: number;
   };
   reminders: {
     title: string;
+    status: DocumentStatus;
     number: {
       format: string;
       padZeros: number;
+      start: number;
     };
     fees: DiscountCharge[];
     dueDays: number;
@@ -44,6 +51,7 @@ export interface SettingsData {
     number: {
       format: string;
       padZeros: number;
+      start: number;
     };
   };
   taxes: {
@@ -60,25 +68,31 @@ class Settings implements SettingsData {
   invoices = {
     title: "Invoice",
     eInvoiceType: "",
+    status: DocumentStatus.Draft,
     number: {
       format: "INV-{number}-{date:yMMdd}",
       padZeros: 3,
+      start: 0,
     },
     dueDays: 30,
   };
   offers = {
     title: "Offer",
+    status: DocumentStatus.Draft,
     number: {
       format: "OFF-{number}-{date:yMMdd}",
       padZeros: 3,
+      start: 0,
     },
     dueDays: 30,
   };
   reminders = {
     title: "Reminder",
+    status: DocumentStatus.Draft,
     number: {
       format: "REM-{number}-{date:yMMdd}",
       padZeros: 3,
+      start: 0,
     },
     fees: [] as DiscountCharge[],
     dueDays: 30,

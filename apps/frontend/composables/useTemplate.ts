@@ -1,4 +1,4 @@
-import { Template } from "~~/models/template";
+import { Template } from "@repo/common";
 import _ from "lodash";
 import Base from "./_base";
 

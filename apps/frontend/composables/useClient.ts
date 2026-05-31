@@ -1,4 +1,4 @@
-import { Client } from "~~/models/client";
+import { Client } from "@repo/common";
 import _ from "lodash";
 import Base from "./_base";
 
@@ -31,7 +31,8 @@ class ClientStore extends Base<Client> {
     this.loading.value = true;
     this.item.value = new Client();
     if (id === "new") {
-      this.item.value.number = await useApi().number("client").get();
+      const [number, _] = await useApi().number("client").get();
+      this.item.value.number = number;
     } else {
       this.item.value = _.mergeWith(this.item.value, await useApi().clients().get(id));
     }
