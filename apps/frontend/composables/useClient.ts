@@ -34,7 +34,7 @@ class ClientStore extends Base<Client> {
       const [number, _] = await useApi().number("client").get();
       this.item.value.number = number;
     } else {
-      this.item.value = _.mergeWith(this.item.value, await useApi().clients().get(id));
+      this.item.value = await useApi().clients().get(id);
     }
 
     this.loading.value = false;

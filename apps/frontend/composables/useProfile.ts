@@ -11,7 +11,7 @@ class ProfileStore {
     this.loading.value = true;
     try {
       if (useAuth().key() && this.me.value.id === null) {
-        this.me.value = Helpers.merge(this.me.value, await useApi().profile().get());
+        this.me.value = await useApi().profile().get();
 
         this.me.value.organization.settings.taxes.options = Helpers.appendTaxOptions(this.me.value.organization.settings.taxes.options);
       }

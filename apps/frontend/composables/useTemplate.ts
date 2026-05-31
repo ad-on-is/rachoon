@@ -44,7 +44,7 @@ class TemplateStore extends Base<Template> {
     this.loading.value = true;
     this.item.value = new Template();
     if (id !== "new") {
-      this.item.value = _.mergeWith(this.item.value, await useApi().templates().get(id));
+      this.item.value = await useApi().templates().get(id);
     }
 
     this.loading.value = false;

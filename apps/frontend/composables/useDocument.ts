@@ -13,7 +13,7 @@ import {
 import { DateTime } from "luxon";
 
 import _ from "lodash";
-import type { Template } from "~/models/template";
+import type { Template } from "@repo/common";
 import Base from "./_base";
 
 class DocumentStore extends Base<Document> {
@@ -225,7 +225,7 @@ class DocumentStore extends Base<Document> {
     if (this.isNew()) {
       await this.handleNew();
     } else {
-      this.item.value = Helpers.merge<Document>(this.item.value, await useApi().documents(this.docType()).get(id));
+      this.item.value = await useApi().documents(this.docType()).get(id);
       if (this.item.value.status === DocumentStatus.Draft) {
         this.canBeDraft.value = true;
       }
@@ -268,12 +268,9 @@ class DocumentStore extends Base<Document> {
 
   handleOfferToInvoice = async () => {
     if (useRoute().query.offer) {
-      _.mergeWith(
-        this.offer.value,
-        await useApi()
-          .documents(DocumentType.Offer)
-          .get(useRoute().query.offer as string),
-      );
+      this.offer.value = await useApi()
+        .documents(DocumentType.Offer)
+        .get(useRoute().query.offer as string);
       this.offer.value.rebuild();
       this.item.value.client = this.offer.value.client;
       this.item.value.clientId = this.offer.value.clientId;

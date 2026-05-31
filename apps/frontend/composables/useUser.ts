@@ -17,7 +17,7 @@ class UserStore extends Base<User> {
     this.loading.value = true;
     this.item.value = new User();
     if (id !== "new") {
-      this.item.value = _.mergeWith(this.item.value, await useApi().users().get(id));
+      this.item.value = await useApi().users().get(id);
     }
 
     this.loading.value = false;
