@@ -20,7 +20,7 @@ RUN pnpm install --prod --force
 
 
 
-FROM node:23-alpine
+FROM node:24.22.1-alpine
 
 USER root
 
